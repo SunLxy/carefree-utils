@@ -1,6 +1,6 @@
-# Tree 树形选择方法
+## Tree 树形选择方法
 
-## getParentChildKey 获取树形映射数据
+### 获取树形映射数据 getParentChildKey
 
 ```ts
 // 获取树形映射数据
@@ -14,7 +14,7 @@ export interface GetParentChildKeyProps {
 }
 ```
 
-## getCheckedTrue 选中方法
+### 选中方法 getCheckedTrue
 
 ```ts
 // 返回值
@@ -39,7 +39,7 @@ export interface GetCheckedProps {
 }
 ```
 
-## getCheckedFalse 取消方法
+### 取消方法 getCheckedFalse
 
 ```ts
 // 返回值
