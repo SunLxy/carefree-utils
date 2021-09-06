@@ -26,14 +26,21 @@
       "prettier --parser=typescript --write"
     ]
   },
+  "peerDependencies": {
+    "immutability-helper": "^3.1.1",
+    "lodash": "^4.17.21"
+  },
   "devDependencies": {
-    "react": "^16.12.0",
+    "@types/immutability-helper": "^2.6.3",
+    "@types/lodash": "^4.14.172",
+    "@types/sortablejs": "^1.10.7",
     "@umijs/test": "^3.0.5",
     "dumi": "^1.0.16",
     "father-build": "^1.17.2",
     "gh-pages": "^3.0.0",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.1",
+    "sortablejs": "^1.14.0",
     "yorkie": "^2.0.0"
   },
   "files": [
