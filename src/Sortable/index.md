@@ -31,7 +31,7 @@
 ```tsx
 import React, { useState, useRef } from 'react';
 import Sortable from 'sortablejs';
-import { onEnd } from 'carefree-utils';
+import { onEnd, getNewAndOld } from 'carefree-utils';
 export interface SortableProps {
   sortProps?: Sortable.Options;
   children?: React.ReactNode;
@@ -106,6 +106,15 @@ export default () => {
     animation: 300,
     fallbackOnBody: true,
     onEnd: (evt: Sortable.SortableEvent) => {
+      const {
+        oldIndex,
+        newIndex,
+        pullMode,
+        oldParentPath,
+        oldPath,
+        newParentPath,
+        newPath,
+      } = getNewAndOld(evt);
       const item = {
         element: evt.item,
         clone: evt.clone,
