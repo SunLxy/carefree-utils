@@ -154,8 +154,8 @@ export default () => {
           }
         }
       }
-      const result = onEnd(evt, dataList, () => {});
-      setDataList(result);
+      const result = onEnd(evt, dataList, []);
+      setDataList(result.dataList);
     },
   };
 
