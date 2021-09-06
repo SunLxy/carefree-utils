@@ -54,10 +54,11 @@ export const getNewAndOld = (evt: Sortable.SortableEvent) => {
   const oldIndex = evt.oldIndex as number;
   const newIndex = evt.newIndex as number;
   const pullMode = evt.pullMode;
-  const oldPath = evt.clone['data-id'] || '';
+  const oldPath = (evt.clone['dataset'] && evt.clone['dataset']['id']) || '';
   let oldParentPath = oldPath.split('-');
   oldParentPath.pop();
-  const toDataId = evt.to['data-id'];
+  const toDataId = (evt.to['dataset'] && evt.to['dataset']['id']) || '';
+  console.log('evt', evt);
   // 判断 pullMode 值 可以判断出 是在一个里面还是不在一个里面
   return {
     // 老的数组下标
