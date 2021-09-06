@@ -30,7 +30,6 @@
 
 ```tsx
 import React, { useState, useRef } from 'react';
-import ItemWarp from '.';
 import Sortable from 'sortablejs';
 import { onEnd } from 'carefree-utils';
 export interface SortableProps {
