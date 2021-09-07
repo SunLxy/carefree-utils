@@ -1,32 +1,104 @@
-# Sortable
+---
+title: Sortable
+---
 
-依赖于 `immutability-helper`和`lodash`
+## Sortable 拖拽数据处理
 
-## getPathArr
+1. 依赖于 `immutability-helper`和`lodash`
+2. 当前只是方法集合 不是 dom 操作，dom 操作部分在案例中
 
-路径进行转换成数组
+### getNewAndOld 获取新老数据位置
 
-## getUpdatePath
+```ts
+/**
+ *  evt: Sortable 拖拽事件中的 evt
+ * */
+type GetNewAndOldProps = (evt: Sortable.SortableEvent) => {
+  // 老的数组下标
+  oldIndex: number | undefined;
+  // 新的数组下标
+  newIndex: number | undefined;
+  // 如果 pullMode 为 null 则 当前层级排序
+  pullMode: 'clone' | boolean | undefined;
+  // 如果 oldParentPath 为空 则 为最外层数据
+  oldParentPath: string | undefined;
+  // 老的 数组下标 路径
+  oldPath: string | undefined;
+  // 最新放入的父级数组下标路径
+  newParentPath: string | undefined;
+  // 最新的放置下标路径
+  newPath: string | undefined;
+};
+```
 
-路径数组格式化成 `lodash`中的`update`需要的那种`a.children.b.children.c`这种格式
+### getPathArr 路径进行转换成数组
 
-## getPathData
+```ts
+/**
+ * path: getNewAndOld 中返回的 path 路径
+ */
+type GetPathArrProps = (path: string) => number[];
+```
 
-根据路径获取数据
+### getUpdatePath 转化更新数据路径
 
-## clearEmtyData
+1. 路径数组格式化成 `lodash`中的`update`需要的那种`1.children.1.children.1`这种格式(`lodash.update(array,"1.children.1.children.1", updater)`)
 
-清除空数据
+```ts
+/**
+ * path: getNewAndOld 中返回的 path 路径
+ */
+type GetUpdatePathProps = (path: string) => string;
+```
 
-## getNewAndOld
+### getPathData 根据路径获取数据
 
-获取新老数据位置
+```ts
+/**
+ * path: getNewAndOld 中返回的 path 路径
+ * dataList；数据源
+ * isChild：是否返回 children 列表
+ */
+type GetPathDataProps = (
+  path: string,
+  dataList: OnEndItemProps[],
+  isChild?: boolean,
+) => any;
+```
 
-## onEnd
+### clearEmtyData 清除空数据
+
+```ts
+/**
+ * dataList: 数据源
+ */
+type ClearEmtyDataProps = (dataList: OnEndItemProps[]) => OnEndItemProps[];
+```
+
+### onEnd 拖拽结束
 
 1. 此方法为`sortablejs`中`onEnd`事件触发后数据处理
 2. 此方法可还用于`sortablejs`中的`onUpdate`事件和`onAdd`事件
 3. 这只是一个方法集合，因此 dom 操作部分在下方代码中
+
+```ts
+/**
+ * evt: Sortable 拖拽事件中的 evt
+ * dataList；数据源
+ * config: clone 拖拽数据源
+ * */
+type OnEndProps = (
+  evt: Sortable.SortableEvent,
+  dataList: OnEndItemProps[],
+  config: OnEndItemProps[],
+) => {
+  dataList: OnEndItemProps[];
+  item: any | undefined;
+  path: string | number;
+};
+```
+
+### 案例
 
 ```tsx
 import React, { useState, useRef } from 'react';

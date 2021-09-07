@@ -13,7 +13,7 @@ export interface OnEndItemProps {
  */
 export const getPathArr = (path: string): number[] =>
   (path || '').split('-').map((k: string) => Number(k));
-
+// 转化更新数据路径
 export const getUpdatePath = (path: string): string =>
   (path || '').split('-').join('.children.');
 
@@ -49,6 +49,7 @@ export const clearEmtyData = (dataList: OnEndItemProps[]) => {
   });
   return childList;
 };
+
 // 获取新老位置
 export const getNewAndOld = (evt: Sortable.SortableEvent) => {
   const oldIndex = evt.oldIndex as number;
