@@ -106,7 +106,7 @@ export const onEnd = (
   }
 
   // 当前内部排序
-  if (!pullMode) {
+  if (!pullMode && oldParentPath) {
     const parentChildData = getPathData(oldParentPath, OptData, true);
     const oldItem = getPathData(oldPath, OptData);
     const parentChild = update(parentChildData, {
@@ -128,19 +128,41 @@ export const onEnd = (
     };
   } else if (pullMode === 'clone') {
     // 克隆的数据 config
-    const newAddItem: any = getPathData(oldPath, config);
-    const parentChildData = getPathData(newParentPath, OptData, true);
-    parentChildData.splice(newIndex, 0, newAddItem);
-    const resultData = lodash.update(
-      OptData,
-      `${newParentPath}.children`,
-      () => parentChildData,
-    );
-    return {
-      dataList: cloneDeep(resultData),
-      item: newAddItem,
-      path: newPath,
-    };
+    const newAddItem: any = getPathData(oldPath, config, true);
+    if (newParentPath === '') {
+      // 最外层的
+      OptData.splice(newIndex, 0, newAddItem);
+      return {
+        item: newAddItem,
+        dataList: cloneDeep(OptData),
+      };
+    } else {
+      // 内层
+      const parentChildData = getPathData(newParentPath, OptData, true);
+      parentChildData.splice(newIndex, 0, newAddItem);
+      const resultData = lodash.update(
+        cloneDeep(OptData),
+        `${newParentPath}.children`,
+        () => parentChildData,
+      );
+      return {
+        item: newAddItem,
+        dataList: cloneDeep(resultData),
+      };
+    }
+    // const newAddItem: any = getPathData(oldPath, config);
+    // const parentChildData = getPathData(newParentPath, OptData, true);
+    // parentChildData.splice(newIndex, 0, newAddItem);
+    // const resultData = lodash.update(
+    //   OptData,
+    //   `${newParentPath}.children`,
+    //   () => parentChildData,
+    // );
+    // return {
+    //   dataList: cloneDeep(resultData),
+    //   item: newAddItem,
+    //   path: newPath,
+    // };
   }
   // 1. 先取老的值
   // 2. 把老的位置的值为空 用于站位

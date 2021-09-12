@@ -136,6 +136,20 @@ const ItemWarp = (props: SortableProps) => {
   );
 };
 
+const config = [
+  {
+    title: '配置',
+    children: [
+      { title: '配置 1.1' },
+      { title: '配置 1.2' },
+      { title: '配置 1.3' },
+      { title: '配置 1.4' },
+      { title: '配置 1.5' },
+      { title: '配置 1.6' },
+    ],
+  },
+];
+
 export default () => {
   const [dataList, setDataList] = useState([
     {
@@ -173,62 +187,67 @@ export default () => {
     },
   ]);
 
+  const onUpdate = (evt: Sortable.SortableEvent) => {
+    const {
+      oldIndex,
+      newIndex,
+      pullMode,
+      oldParentPath,
+      oldPath,
+      newParentPath,
+      newPath,
+    } = getNewAndOld(evt);
+    console.log(evt);
+    const item = {
+      element: evt.item,
+      clone: evt.clone,
+      parentElement: evt.from,
+    };
+    // 需要对dom节点进行操作
+    // 1. 当前内部进行 排序
+    if (!pullMode) {
+      /* eslint-disable */
+      if (item.parentElement !== null) {
+        item.parentElement.removeChild(evt.item);
+      }
+      if (item.parentElement) {
+        const refChild = item.parentElement.childNodes[oldIndex] || null;
+        if (refChild) {
+          item.parentElement.insertBefore(evt.item, refChild);
+        } else {
+          item.parentElement.appendChild(evt.item);
+        }
+      }
+    } else if (pullMode === 'clone') {
+      // 克隆添加的 移除当前所在的位置
+      if (item.element && item.element.parentElement) {
+        item.element.parentElement.removeChild(item.element);
+      }
+    } else {
+      // 不是内部排序 不是 克隆 添加
+      if (item.element && item.element.parentElement) {
+        item.element.parentElement.removeChild(item.element);
+      }
+      if (item.parentElement) {
+        const refChild = item.parentElement.childNodes[oldIndex] || null;
+        if (refChild) {
+          item.parentElement.insertBefore(evt.item, refChild);
+        } else {
+          item.parentElement.appendChild(evt.item);
+        }
+      }
+    }
+    const result = onEnd(evt, dataList, config);
+    console.log(result);
+    setDataList(result.dataList);
+  };
+
   const sortProps: Sortable.Options = {
     group: 'nodes',
     animation: 300,
     fallbackOnBody: true,
-    onEnd: (evt: Sortable.SortableEvent) => {
-      const {
-        oldIndex,
-        newIndex,
-        pullMode,
-        oldParentPath,
-        oldPath,
-        newParentPath,
-        newPath,
-      } = getNewAndOld(evt);
-      const item = {
-        element: evt.item,
-        clone: evt.clone,
-        parentElement: evt.from,
-      };
-      // 需要对dom节点进行操作
-      // 1. 当前内部进行 排序
-      if (!pullMode) {
-        /* eslint-disable */
-        if (item.parentElement !== null) {
-          item.parentElement.removeChild(evt.item);
-        }
-        if (item.parentElement) {
-          const refChild = item.parentElement.childNodes[oldIndex] || null;
-          if (refChild) {
-            item.parentElement.insertBefore(evt.item, refChild);
-          } else {
-            item.parentElement.appendChild(evt.item);
-          }
-        }
-      } else if (pullMode === 'clone') {
-        // 克隆添加的 移除当前所在的位置
-        if (item.element && item.element.parentElement) {
-          item.element.parentElement.removeChild(item.element);
-        }
-      } else {
-        // 不是内部排序 不是 克隆 添加
-        if (item.element && item.element.parentElement) {
-          item.element.parentElement.removeChild(item.element);
-        }
-        if (item.parentElement) {
-          const refChild = item.parentElement.childNodes[oldIndex] || null;
-          if (refChild) {
-            item.parentElement.insertBefore(evt.item, refChild);
-          } else {
-            item.parentElement.appendChild(evt.item);
-          }
-        }
-      }
-      const result = onEnd(evt, dataList, []);
-      setDataList(result.dataList);
-    },
+    onAdd: onUpdate,
+    onUpdate: onUpdate,
   };
 
   const loop = (data: any[], parentId?: string) => {
@@ -251,6 +270,32 @@ export default () => {
 
   return (
     <div>
+      <div>
+        配置
+        {config.map((item, index) => {
+          const { children } = item;
+          return (
+            <ItemWarp
+              sortProps={{
+                group: {
+                  name: 'nodes',
+                  pull: 'clone',
+                  put: false,
+                },
+                animation: 300,
+                fallbackOnBody: true,
+                sort: false,
+              }}
+              key={`${index}`}
+              warpProps={{ 'data-id': `${index}` }}
+            >
+              {children.map((child, k) => {
+                return <div key={`${index}-${k}`}>{child.title}</div>;
+              })}
+            </ItemWarp>
+          );
+        })}
+      </div>
       <ItemWarp sortProps={sortProps} warpProps={{ style: { padding: 20 } }}>
         {loop(dataList)}
       </ItemWarp>
