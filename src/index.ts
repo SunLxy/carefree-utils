@@ -7,3 +7,9 @@ export {
   getNewAndOld,
   onEnd,
 } from './Sortable';
+
+export { default as get } from './get';
+export * from './get';
+
+export { default as set } from './set';
+export * from './set';
