@@ -1,5 +1,5 @@
 ---
-title: date
+title: Date
 ---
 
 > 传递一个日期处理成渲染数据列表
