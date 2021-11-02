@@ -10,13 +10,25 @@ title: Date
 import { MoveDate } from 'carefree-utils';
 // 案例
 const getslit = async () => {
-  var dates = new MoveDate({
+  const dates = new MoveDate({
     // min: "2021-12-14 16:16:26",
     max: '2022-12-14 16:16:26',
   });
+  const dates2 = new MoveDate({
+    min: '2021-10-14 16:16:26',
+    // max: '2022-12-14 16:16:26',
+  });
+  const dates3 = new MoveDate({
+    min: '2021-12-14 16:16:26',
+    max: '2022-12-14 16:16:26',
+  });
   var resu = await dates.move('2022-12-17 15:14:18');
+  var resu2 = await dates2.move('2021-09-17 15:14:18');
+  var resu3 = await dates3.move('2021-12-17 15:14:18');
   // eslint-disable-next-line no-console
-  console.log(resu);
+  console.log('resu=---', resu);
+  console.log('resu2=---', resu2);
+  console.log('resu3=---', resu3);
 };
 getslit();
 // // 返回格式

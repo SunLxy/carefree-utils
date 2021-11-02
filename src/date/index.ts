@@ -102,7 +102,7 @@ class MoveDate {
       }
       // 获取月份数据
       this.dateList.month = getRangeNumber(start, 13); //赋列表展示值
-    } else if (this.min && this.max.year === this.year) {
+    } else if (this.max && this.max.year === this.year) {
       //判断最大年份是否相等
       // 判断当前选中月份是否合法
       if (this.month > this.max.month) {
