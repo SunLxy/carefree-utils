@@ -22,13 +22,25 @@ const getslit = async () => {
     min: '2021-12-14 16:16:26',
     max: '2022-12-14 16:16:26',
   });
+  const dates4 = new MoveDate({
+    min: '2021-12-14 16:16:26',
+    max: '2022-12-14 16:16:26',
+  });
+  const dates5 = new MoveDate({
+    min: '2021-12-14 16:16:26',
+    max: '2022-12-14 16:16:26',
+  });
   var resu = await dates.move('2022-12-17 15:14:18');
   var resu2 = await dates2.move('2021-09-17 15:14:18');
   var resu3 = await dates3.move('2021-12-17 15:14:18');
+  var resu4 = await dates4.move('2021-12-17');
+  var resu5 = await dates5.move('2022-12-01');
   // eslint-disable-next-line no-console
   console.log('resu=---', resu);
   console.log('resu2=---', resu2);
   console.log('resu3=---', resu3);
+  console.log('resu4=---', resu4);
+  console.log('resu5=---', resu5);
 };
 getslit();
 // // 返回格式

@@ -99,6 +99,8 @@ class MoveDate {
         this.dateStr.month = getNumString(this.min.month);
         start = this.min.month;
         str = 'minEqual';
+      } else {
+        this.dateStr.month = getNumString(this.month);
       }
       // 获取月份数据
       this.dateList.month = getRangeNumber(start, 13); //赋列表展示值
@@ -114,6 +116,8 @@ class MoveDate {
         this.dateStr.month = getNumString(this.max.month);
         start = this.max.month;
         str = 'maxEqual';
+      } else {
+        this.dateStr.month = getNumString(this.month);
       }
       // 获取月份数据
       this.dateList.month = getRangeNumber(1, start + 1); //赋列表展示值
@@ -122,6 +126,7 @@ class MoveDate {
       // 其他情况不做处理
       this.dateList.month = getRangeNumber(1, 13); //赋列表展示值
     }
+    console.log(str);
     await this.getDate(str);
   };
   // 处理日期的
@@ -131,65 +136,71 @@ class MoveDate {
     num: number,
     nextFun?: string,
   ) => {
-    let start = ['date', 'month', 'h'].includes(key) ? 1 : 0;
+    let start = key === 'date' ? 1 : 0;
     let nextStr: StrType = 'default';
-    const monthDay = ['date', 'month', 'h'].includes(key) ? num + 1 : num;
+    let monthDay = num;
     if (str === 'min') {
-      // 最小
-      if (this[key] < this.min[key]) {
-        // 判断当前值是否小于最小值
-        this.dateStr[key] = getNumString(this.min[key]); // 赋结果值
-        start = this.min[key];
-        nextStr = 'min';
-      } else if (this[key] === this.min[key]) {
-        // 判断当前值是否等于最小值
-        this.dateStr[key] = getNumString(this.min[key]); // 赋结果值
-        start = this.min[key];
-        nextStr = 'minEqual';
-      }
-      this.dateList[key] = getRangeNumber(start, monthDay); // 赋列表展示值
-    } else if (str === 'max') {
-      // 最大
-      if (this[key] > this.max[key]) {
-        // 判断当前值是否大于最大值
-        this.dateStr[key] = getNumString(this.max[key]); // 赋结果值
-        start = this.max[key];
-        nextStr = 'max';
-      } else if (this[key] === this.max[key]) {
-        // 判断当前值是否等于最大值
-        this.dateStr[key] = getNumString(this.max[key]); // 赋结果值
-        start = this.max[key];
-        nextStr = 'maxEqual';
-      }
-      if (['date', 'month'].includes(key)) {
-        this.dateList[key] = getRangeNumber(1, start + 1); // 赋列表展示值
-      } else if (['h', 'm', 's'].includes(key)) {
-        this.dateList[key] = getRangeNumber(0, start + 1); // 赋列表展示值
-      } else {
-        this.dateList[key] = getRangeNumber(0, start); // 赋列表展示值
-      }
-    } else if (str === 'maxEqual') {
-      // 最大值相等
-      this.dateStr[key] = getNumString(this.max[key]); // 赋结果值
-      start = this.max[key];
-      nextStr = 'maxEqual';
-      if (['date', 'month'].includes(key)) {
-        this.dateList[key] = getRangeNumber(1, start + 1); // 赋列表展示值
-      } else if (['h', 'm', 's'].includes(key)) {
-        this.dateList[key] = getRangeNumber(0, start + 1); // 赋列表展示值
-      } else {
-        this.dateList[key] = getRangeNumber(0, start); // 赋列表展示值
-      }
-    } else if (str === 'minEqual') {
-      // 最小值相等
+      // 上一个取值最小值
+      // 最小值一直取最小值 ()
+      nextStr = 'min';
       this.dateStr[key] = getNumString(this.min[key]); // 赋结果值
       start = this.min[key];
-      nextStr = 'minEqual';
-      this.dateList[key] = getRangeNumber(start, monthDay); // 赋列表展示值
+      this.dateList[key] = getRangeNumber(
+        start,
+        ['date', 'h'].includes(key) ? monthDay + 1 : monthDay,
+      ); // 赋列表展示值
+    } else if (str === 'minEqual') {
+      // 最小值相等 下一个做判断
+      if (this[key] === this.min[key]) {
+        nextStr = 'minEqual';
+        this.dateStr[key] = getNumString(this.min[key]);
+        start = this.min[key];
+      } else if (this[key] < this.min[key]) {
+        nextStr = 'min';
+        this.dateStr[key] = getNumString(this.min[key]);
+        start = this.min[key];
+      } else {
+        this.dateStr[key] = getNumString(this[key]);
+        // start = this[key]
+      }
+      this.dateList[key] = getRangeNumber(
+        start,
+        ['date', 'h'].includes(key) ? monthDay + 1 : monthDay,
+      ); // 赋列表展示值
+    } else if (str === 'max') {
+      // 最大值一直取最大值
+      nextStr = 'max';
+      this.dateStr[key] = getNumString(this.max[key]); // 赋结果值
+      monthDay = this.max[key];
+      this.dateList[key] = getRangeNumber(
+        start,
+        ['date', 'h'].includes(key) ? monthDay + 1 : monthDay,
+      ); // 赋列表展示值
+    } else if (str === 'maxEqual') {
+      //最大值相等做下一个判断
+      if (this[key] === this.max[key]) {
+        nextStr = 'maxEqual';
+        this.dateStr[key] = getNumString(this.max[key]);
+        start = this.max[key];
+      } else if (this[key] > this.max[key]) {
+        nextStr = 'max';
+        this.dateStr[key] = getNumString(this.max[key]);
+        monthDay = this.max[key];
+      } else {
+        this.dateStr[key] = getNumString(this[key]);
+        // monthDay = this[key]
+      }
+      this.dateList[key] = getRangeNumber(
+        start,
+        ['date', 'h'].includes(key) ? monthDay + 1 : monthDay,
+      ); // 赋列表展示值
     } else {
-      // 其他
-      this.dateStr[key] = getNumString(this[key]); // 赋结果值
-      this.dateList[key] = getRangeNumber(start, monthDay); // 赋列表展示值
+      // 默认情况 一直走默认
+      this.dateStr[key] = getNumString(this[key]);
+      this.dateList[key] = getRangeNumber(
+        start,
+        ['date', 'h'].includes(key) ? monthDay + 1 : monthDay,
+      ); // 赋列表展示值
     }
     if (nextFun && this[nextFun]) {
       await this[nextFun](nextStr);
@@ -210,12 +221,115 @@ class MoveDate {
       new Date(this.year, this.month, 0).getDate(),
       'getHours',
     );
+
+    // let start = 1;
+    // let nextStr: StrType = 'default';
+    // let monthDay = new Date(this.year, this.month, 0).getDate();
+    // if (str === "min") {// 上一个取值最小值
+    //   // 最小值一直取最小值 ()
+    //   nextStr = "min"
+    //   this.dateStr.date = getNumString(this.min.date); // 赋结果值
+    //   start = this.min.date
+    //   this.dateList.date = getRangeNumber(start, monthDay + 1); // 赋列表展示值
+    // } else if (str === "minEqual") {
+    //   // 最小值相等 下一个做判断
+    //   if (this.date === this.min.date) {
+    //     nextStr = "minEqual"
+    //     this.dateStr.date = getNumString(this.min.date)
+    //     start = this.min.date
+    //   } else if (this.date < this.min.date) {
+    //     nextStr = "min"
+    //     this.dateStr.date = getNumString(this.min.date)
+    //     start = this.min.date
+    //   } else {
+    //     this.dateStr.date = getNumString(this.date)
+    //     // start = this.date
+    //   }
+    //   this.dateList.date = getRangeNumber(start, monthDay + 1); // 赋列表展示值
+    // } else if (str === "max") {
+    //   // 最大值一直取最大值
+    //   nextStr = "max"
+    //   this.dateStr.date = getNumString(this.max.date); // 赋结果值
+    //   monthDay = this.max.date
+    //   this.dateList.date = getRangeNumber(start, monthDay + 1); // 赋列表展示值
+    // } else if (str === "maxEqual") {
+    //   //最大值相等做下一个判断
+    //   if (this.date === this.max.date) {
+    //     nextStr = "maxEqual"
+    //     this.dateStr.date = getNumString(this.max.date)
+    //     start = this.max.date
+    //   } else if (this.date > this.max.date) {
+    //     nextStr = "max"
+    //     this.dateStr.date = getNumString(this.max.date)
+    //     monthDay = this.max.date
+    //   } else {
+    //     this.dateStr.date = getNumString(this.date)
+    //     // monthDay = this.date
+    //   }
+    //   this.dateList.date = getRangeNumber(start, monthDay + 1); // 赋列表展示值
+    // } else {
+    //   // 默认情况 一直走默认
+    //   this.dateStr.date = getNumString(this.date)
+    //   this.dateList.date = getRangeNumber(start, monthDay + 1); // 赋列表展示值
+    // }
+    // await this.getHours(nextStr)
   };
   /**
    * 当天数开始动的时候(前面其他的不用动)
    * **/
   private getHours = async (str: StrType) => {
     await this.setDateCom(str, 'h', 23, 'getMinutes');
+    // let start = 0;
+    // let nextStr: StrType = 'default';
+    // let monthDay = 23;
+    // if (str === "min") {// 上一个取值最小值
+    //   // 最小值一直取最小值 ()
+    //   nextStr = "min"
+    //   this.dateStr.h = getNumString(this.min.h); // 赋结果值
+    //   start = this.min.h
+    //   this.dateList.h = getRangeNumber(start, monthDay + 1); // 赋列表展示值
+    // } else if (str === "minEqual") {
+    //   // 最小值相等 下一个做判断
+    //   if (this.h === this.min.h) {
+    //     nextStr = "minEqual"
+    //     this.dateStr.h = getNumString(this.min.h)
+    //     start = this.min.h
+    //   } else if (this.h < this.min.h) {
+    //     nextStr = "min"
+    //     this.dateStr.h = getNumString(this.min.h)
+    //     start = this.min.h
+    //   } else {
+    //     this.dateStr.h = getNumString(this.h)
+    //     // start = this.date
+    //   }
+    //   this.dateList.h = getRangeNumber(start, monthDay + 1); // 赋列表展示值
+    // } else if (str === "max") {
+    //   // 最大值一直取最大值
+    //   nextStr = "max"
+    //   this.dateStr.h = getNumString(this.max.h); // 赋结果值
+    //   monthDay = this.max.h
+    //   this.dateList.h = getRangeNumber(start, monthDay + 1); // 赋列表展示值
+    // } else if (str === "maxEqual") {
+    //   //最大值相等做下一个判断
+    //   if (this.h === this.max.h) {
+    //     nextStr = "maxEqual"
+    //     this.dateStr.h = getNumString(this.max.h)
+    //     start = this.max.h
+    //   } else if (this.h > this.max.h) {
+    //     nextStr = "max"
+    //     this.dateStr.h = getNumString(this.max.h)
+    //     monthDay = this.max.h
+    //   } else {
+    //     this.dateStr.h = getNumString(this.h)
+    //     // monthDay = this.date
+    //   }
+    //   this.dateList.h = getRangeNumber(start, monthDay + 1); // 赋列表展示值
+    // } else {
+    //   // 默认情况 一直走默认
+    //   this.dateStr.h = getNumString(this.h)
+    //   this.dateList.h = getRangeNumber(start, monthDay + 1); // 赋列表展示值
+    // }
+    // await this.getMinutes(nextStr)
   };
   /**
    * 如果时分秒也做限制 (前面其他的不用动)
@@ -223,12 +337,113 @@ class MoveDate {
    * **/
   private getMinutes = async (str: StrType) => {
     await this.setDateCom(str, 'm', 60, 'getSeconds');
+    // let start = 0;
+    // let nextStr: StrType = 'default';
+    // let monthDay = 60;
+    // if (str === "min") {// 上一个取值最小值
+    //   // 最小值一直取最小值 ()
+    //   nextStr = "min"
+    //   this.dateStr.m = getNumString(this.min.m); // 赋结果值
+    //   start = this.min.m
+    //   this.dateList.m = getRangeNumber(start, monthDay); // 赋列表展示值
+    // } else if (str === "minEqual") {
+    //   // 最小值相等 下一个做判断
+    //   if (this.m === this.min.m) {
+    //     nextStr = "minEqual"
+    //     this.dateStr.m = getNumString(this.min.m)
+    //     start = this.min.m
+    //   } else if (this.m < this.min.m) {
+    //     nextStr = "min"
+    //     this.dateStr.m = getNumString(this.min.m)
+    //     start = this.min.m
+    //   } else {
+    //     this.dateStr.m = getNumString(this.m)
+    //     // start = this.date
+    //   }
+    //   this.dateList.m = getRangeNumber(start, monthDay); // 赋列表展示值
+    // } else if (str === "max") {
+    //   // 最大值一直取最大值
+    //   nextStr = "max"
+    //   this.dateStr.m = getNumString(this.max.m); // 赋结果值
+    //   monthDay = this.max.m
+    //   this.dateList.m = getRangeNumber(start, monthDay); // 赋列表展示值
+    // } else if (str === "maxEqual") {
+    //   //最大值相等做下一个判断
+    //   if (this.m === this.max.m) {
+    //     nextStr = "maxEqual"
+    //     this.dateStr.m = getNumString(this.max.m)
+    //     start = this.max.m
+    //   } else if (this.m > this.max.m) {
+    //     nextStr = "max"
+    //     this.dateStr.m = getNumString(this.max.m)
+    //     monthDay = this.max.m
+    //   } else {
+    //     this.dateStr.m = getNumString(this.m)
+    //     // monthDay = this.date
+    //   }
+    //   this.dateList.m = getRangeNumber(start, monthDay); // 赋列表展示值
+    // } else {
+    //   // 默认情况 一直走默认
+    //   this.dateStr.m = getNumString(this.m)
+    //   this.dateList.m = getRangeNumber(start, monthDay); // 赋列表展示值
+    // }
+    // await this.getSeconds(nextStr)
   };
   /**
    *  动小时(前面其他的不用动)
    * */
   private getSeconds = async (str: StrType) => {
     await this.setDateCom(str, 's', 60);
+    // let start = 0;
+    // let nextStr: StrType = 'default';
+    // let monthDay = 60;
+    // if (str === "min") {// 上一个取值最小值
+    //   // 最小值一直取最小值 ()
+    //   nextStr = "min"
+    //   this.dateStr.s = getNumString(this.min.s); // 赋结果值
+    //   start = this.min.s
+    //   this.dateList.s = getRangeNumber(start, monthDay); // 赋列表展示值
+    // } else if (str === "minEqual") {
+    //   // 最小值相等 下一个做判断
+    //   if (this.s === this.min.s) {
+    //     nextStr = "minEqual"
+    //     this.dateStr.s = getNumString(this.min.s)
+    //     start = this.min.s
+    //   } else if (this.s < this.min.s) {
+    //     nextStr = "min"
+    //     this.dateStr.s = getNumString(this.min.s)
+    //     start = this.min.s
+    //   } else {
+    //     this.dateStr.s = getNumString(this.s)
+    //     // start = this.date
+    //   }
+    //   this.dateList.s = getRangeNumber(start, monthDay); // 赋列表展示值
+    // } else if (str === "max") {
+    //   // 最大值一直取最大值
+    //   nextStr = "max"
+    //   this.dateStr.s = getNumString(this.max.s); // 赋结果值
+    //   monthDay = this.max.s
+    //   this.dateList.s = getRangeNumber(start, monthDay); // 赋列表展示值
+    // } else if (str === "maxEqual") {
+    //   //最大值相等做下一个判断
+    //   if (this.s === this.max.s) {
+    //     nextStr = "maxEqual"
+    //     this.dateStr.s = getNumString(this.max.s)
+    //     start = this.max.s
+    //   } else if (this.s > this.max.s) {
+    //     nextStr = "max"
+    //     this.dateStr.s = getNumString(this.max.s)
+    //     monthDay = this.max.s
+    //   } else {
+    //     this.dateStr.s = getNumString(this.s)
+    //     // monthDay = this.date
+    //   }
+    //   this.dateList.s = getRangeNumber(start, monthDay); // 赋列表展示值
+    // } else {
+    //   // 默认情况 一直走默认
+    //   this.dateStr.s = getNumString(this.s)
+    //   this.dateList.s = getRangeNumber(start, monthDay); // 赋列表展示值
+    // }
   };
   // 这个方法不进行使用只是解决eslint问题
   getFun = () => {
