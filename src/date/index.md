@@ -2,14 +2,25 @@
 title: Date
 ---
 
-> 传递一个日期处理成渲染数据列表
+> 这是一个传递一个日期处理成渲染数据列表的类方法
+
+### 参数
+
+```ts
+export interface MoveDateProps {
+  /** 最大选择日期  **/
+  max?: string;
+  /** 最小选择日期 */
+  min?: string;
+}
+```
 
 ### demo
 
 ```tsx
 import { MoveDate } from 'carefree-utils';
 // 案例
-const getslit = async () => {
+const getslit = () => {
   const dates = new MoveDate({
     // min: "2021-12-14 16:16:26",
     max: '2022-12-14 16:16:26',
@@ -30,11 +41,11 @@ const getslit = async () => {
     min: '2021-12-14 16:16:26',
     max: '2022-12-14 16:16:26',
   });
-  var resu = await dates.move('2022-12-17 15:14:18');
-  var resu2 = await dates2.move('2021-09-17 15:14:18');
-  var resu3 = await dates3.move('2021-12-17 15:14:18');
-  var resu4 = await dates4.move('2021-12-17');
-  var resu5 = await dates5.move('2022-12-01');
+  var resu = dates.move('2022-12-17 15:14:18');
+  var resu2 = dates2.move('2021-09-17 15:14:18');
+  var resu3 = dates3.move('2021-12-17 15:14:18');
+  var resu4 = dates4.move('2021-12-17');
+  var resu5 = dates5.move('2022-12-01');
   // eslint-disable-next-line no-console
   console.log('resu=---', resu);
   console.log('resu2=---', resu2);

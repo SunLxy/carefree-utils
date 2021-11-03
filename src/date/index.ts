@@ -53,12 +53,12 @@ class MoveDate {
       }
     });
   };
-  move = async (date: string) => {
+  move = (date: string) => {
     const result = this.analysisDate(date);
     Object.entries(result).forEach(([key, value]) => {
       this[key] = value;
     });
-    await this.getMonth();
+    this.getMonth();
     return {
       // 最新的渲染数据列表
       data: this.dateList,
@@ -84,7 +84,7 @@ class MoveDate {
    * 2. 获取点击年份的月份的天数 判断月份和天数是否在限制内，不在则取最大或最小限制月份和天数'
    * date:"2021-12-12 12:12:12"
    * */
-  private getMonth = async () => {
+  private getMonth = () => {
     let start = 0;
     let str: StrType = 'default';
     if (this.min && this.min.year === this.year) {
@@ -126,11 +126,10 @@ class MoveDate {
       // 其他情况不做处理
       this.dateList.month = getRangeNumber(1, 13); //赋列表展示值
     }
-    console.log(str);
-    await this.getDate(str);
+    this.getDate(str);
   };
   // 处理日期的
-  private setDateCom = async (
+  private setDateCom = (
     str: StrType,
     key: keyType,
     num: number,
@@ -203,7 +202,7 @@ class MoveDate {
       ); // 赋列表展示值
     }
     if (nextFun && this[nextFun]) {
-      await this[nextFun](nextStr);
+      this[nextFun](nextStr);
     }
   };
 
@@ -211,11 +210,11 @@ class MoveDate {
    * 当月份开始动的时候(前面其他的不用动)
    * 1. 判断天数是否在限制内，不在则取最大或最小限制天数
    * **/
-  private getDate = async (str: StrType) => {
+  private getDate = (str: StrType) => {
     /**
      * 数据返回格式 返回的是天数
      * */
-    await this.setDateCom(
+    this.setDateCom(
       str,
       'date',
       new Date(this.year, this.month, 0).getDate(),
@@ -277,8 +276,8 @@ class MoveDate {
   /**
    * 当天数开始动的时候(前面其他的不用动)
    * **/
-  private getHours = async (str: StrType) => {
-    await this.setDateCom(str, 'h', 23, 'getMinutes');
+  private getHours = (str: StrType) => {
+    this.setDateCom(str, 'h', 23, 'getMinutes');
     // let start = 0;
     // let nextStr: StrType = 'default';
     // let monthDay = 23;
@@ -335,8 +334,8 @@ class MoveDate {
    * 如果时分秒也做限制 (前面其他的不用动)
    * 1. 上面年份动 再加上时分秒的限制
    * **/
-  private getMinutes = async (str: StrType) => {
-    await this.setDateCom(str, 'm', 60, 'getSeconds');
+  private getMinutes = (str: StrType) => {
+    this.setDateCom(str, 'm', 60, 'getSeconds');
     // let start = 0;
     // let nextStr: StrType = 'default';
     // let monthDay = 60;
@@ -392,8 +391,8 @@ class MoveDate {
   /**
    *  动小时(前面其他的不用动)
    * */
-  private getSeconds = async (str: StrType) => {
-    await this.setDateCom(str, 's', 60);
+  private getSeconds = (str: StrType) => {
+    this.setDateCom(str, 's', 60);
     // let start = 0;
     // let nextStr: StrType = 'default';
     // let monthDay = 60;
