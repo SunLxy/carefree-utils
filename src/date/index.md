@@ -2,11 +2,13 @@
 title: Date
 ---
 
-> 这是一个传递一个日期处理成渲染数据列表的类方法
+> `MoveDate` 是传递一个日期处理成渲染数据列表的类方法
+> `paneDate` 传一个年份和月份 获取这个月份的面板渲染数据
 
 ### 参数
 
 ```ts
+// new MoveDate 需要的参数
 export interface MoveDateProps {
   /** 最大选择日期  **/
   max?: string;
@@ -18,7 +20,7 @@ export interface MoveDateProps {
 ### demo
 
 ```tsx
-import { MoveDate } from 'carefree-utils';
+import { MoveDate, paneDate } from 'carefree-utils';
 // 案例
 const getslit = () => {
   const dates = new MoveDate({
@@ -52,9 +54,11 @@ const getslit = () => {
   console.log('resu3=---', resu3);
   console.log('resu4=---', resu4);
   console.log('resu5=---', resu5);
+
+  console.log(paneDate.getPaneDate(2021, 10));
 };
 getslit();
-// // 返回格式
+// //new MoveDate().move 返回格式
 // const result = {
 //   data: {
 //     month: [
@@ -96,4 +100,6 @@ getslit();
 //   },
 //   new: { month: 12, date: 17, h: 15, m: 14, s: 18 }
 // }
+// // paneDate.getPaneDate(2021,10) 返回格式
+// [26, 27, 28, 29, 30, '01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
 ```
