@@ -2,18 +2,29 @@
 title: Date
 ---
 
-> `MoveDate` 是传递一个日期处理成渲染数据列表的类方法
-> `paneDate` 传一个年份和月份 获取这个月份的面板渲染数据
+> 1. `MoveDate` 是传递一个日期处理成渲染数据列表的类方法
+> 2. `paneDate` 传一个年份和月份 获取这个月份的面板渲染数据
 
 ### 参数
 
 ```ts
 // new MoveDate 需要的参数
-export interface MoveDateProps {
+interface MoveDateProps {
   /** 最大选择日期  **/
   max?: string;
   /** 最小选择日期 */
   min?: string;
+}
+
+// paneDate 返回数组中单个数据参数
+interface solarTolunarReturn {
+  lunarTg: string;
+  lunarZodiac: string;
+  lunarMonth: string;
+  lunarMonthNickname: string;
+  lunarDate: string;
+  date: string | number;
+  week: string;
 }
 ```
 
@@ -101,5 +112,5 @@ getslit();
 //   new: { month: 12, date: 17, h: 15, m: 14, s: 18 }
 // }
 // // paneDate.getPaneDate(2021,10) 返回格式
-// [26, 27, 28, 29, 30, '01', '02', '03', '04', '05', '06', '07', '08', '09', 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+//
 ```
