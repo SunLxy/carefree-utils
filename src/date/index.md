@@ -32,6 +32,11 @@ interface solarTolunarReturn {
 
 ```tsx
 import { MoveDate, paneDate } from 'carefree-utils';
+
+if (window) {
+  window.MoveDate = MoveDate;
+  window.paneDate = paneDate;
+}
 // 案例
 const getslit = () => {
   const dates = new MoveDate({
