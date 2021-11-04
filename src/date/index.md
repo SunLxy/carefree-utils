@@ -71,7 +71,9 @@ const getslit = () => {
   console.log('resu4=---', resu4);
   console.log('resu5=---', resu5);
 
-  console.log(new paneDate().getPaneDate(2021, 11));
+  for (let i = 0; i < 12; i++) {
+    console.log(`2021年${i + 1}月`, new paneDate().getPaneDate(2021, i + 1));
+  }
 };
 getslit();
 // //new MoveDate().move 返回格式

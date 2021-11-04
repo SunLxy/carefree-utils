@@ -43,6 +43,8 @@ const numString = [
 ];
 
 export interface solarTolunarReturn {
+  year: string | number;
+  lunarYear: string;
   lunarTg: string;
   lunarZodiac: string;
   lunarMonth: string;
@@ -50,6 +52,7 @@ export interface solarTolunarReturn {
   lunarDate: string;
   date: string | number;
   week: string;
+  month: string | number;
 }
 
 // 阳历转农历日期
@@ -73,7 +76,6 @@ export const solarTolunar = (
   const monthNickname = monString.slice(monthIndex, monthIndex + 1);
   return {
     year: year,
-    //
     lunarYear: lunarYear,
     lunarTg: tg,
     // 年 属相
@@ -88,6 +90,8 @@ export const solarTolunar = (
     date: date,
     // 星期几
     week: `星期${weekLunar}`,
+    // 月份
+    month: getNumString(month),
   };
 };
 
