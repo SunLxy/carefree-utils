@@ -82,4 +82,4 @@ class PaneDate {
   };
 }
 
-export default new PaneDate();
+export default PaneDate;
