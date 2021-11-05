@@ -18,6 +18,8 @@ interface MoveDateProps {
 
 // paneDate 返回数组中单个数据参数
 interface solarTolunarReturn {
+  year: string | number;
+  lunarYear: string;
   lunarTg: string;
   lunarZodiac: string;
   lunarMonth: string;
@@ -25,6 +27,11 @@ interface solarTolunarReturn {
   lunarDate: string;
   date: string | number;
   week: string;
+  month: string | number;
+  solarTerms: string;
+  traditionalFestival: string;
+  festival: string;
+  InternationalFestivals: string;
 }
 ```
 

@@ -20,7 +20,7 @@ export const getRangeNumber = (start: number, end: number) => {
   return arr;
 };
 
-// --------------------- 下面的处理节气的
+/** ---------------------下面的处理节气的------------------------ ***/
 
 export interface GetMonthTermReturn {
   index1?: number;
@@ -106,7 +106,46 @@ export const getMonthTerm = (year: number, m: number): GetMonthTermReturn => {
   };
 };
 
-// ------------------------------
+/** ------------------------------------------------------------- ***/
+
+/** --------------------------中国农历传统节日----------------------------------- ***/
+const traditionalFestival = new Map([
+  ['正月初一', '春节'],
+  ['正月十五', '元宵节'],
+  ['二月初二', '龙抬头'],
+  ['三月初三', '上巳节'],
+  ['五月初五', '端午节'],
+  ['七月初七', '七夕节'],
+  ['七月十五', '中元节'],
+  ['八月十五', '中秋节'],
+  ['九月初九', '重阳节'],
+  ['十月十五', '下元节'],
+  ['腊月二十四', '小年'],
+]);
+/** --------------------------中国阳历节日----------------------------------- ***/
+const festival = new Map([
+  ['01月10日', '中国人民警察节'],
+  ['03月12日', '植树节'],
+  ['05月04日', '青年节'],
+  ['05月30日', '全国科技工作者日'],
+  ['08月01日', '中国人民解放军建军节'],
+  ['08月19日', '中国医师节'],
+  ['09月10日', '教师节'],
+  ['10月01日', '国庆节'],
+  ['11月08日', '记者节'],
+]);
+/** --------------------------国际节日----------------------------------- ***/
+const InternationalFestivals = new Map([
+  ['01月01日', '元旦'],
+  ['02月14日', '情人节'],
+  ['03月08日', '妇女节'],
+  ['05月01日', '劳动节'],
+  ['05月12日', '护士节'],
+  ['06月01日', '儿童节'],
+]);
+
+/** --------------------------------------------------------------- ***/
+
 // 一一对应
 const dzString = '子丑寅卯辰巳午未申酉戌亥';
 const ZodiacStr = '鼠牛虎兔龙蛇马羊猴鸡狗猪';
@@ -138,6 +177,9 @@ export interface solarTolunarReturn {
   week: string;
   month: string | number;
   solarTerms: string;
+  traditionalFestival: string;
+  festival: string;
+  InternationalFestivals: string;
 }
 
 // 阳历转农历日期
@@ -180,13 +222,21 @@ export const solarTolunar = (
     // 农历 几号
     lunarDate: dateLunar,
     // 一个月中那天
-    date: date,
+    date: d,
     // 星期几
     week: `星期${weekLunar}`,
     // 月份
     month: getNumString(month),
     // 节气
     solarTerms,
+    // 农历节日
+    traditionalFestival: traditionalFestival.get(`${monthLunar}月${dateLunar}`),
+    // 阳历节日
+    festival: festival.get(`${getNumString(month)}月${d}日`),
+    // 世界节日
+    InternationalFestivals: InternationalFestivals.get(
+      `${getNumString(month)}月${d}日`,
+    ),
   };
 };
 
