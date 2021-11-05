@@ -282,12 +282,12 @@ export const solarTolunar = (
     // 农历 几号
     lunarDate: dateLunar,
     // 一个月中那天
-    date: date,
+    date: Number(date),
     dateStr: d,
     // 星期几
     week: `星期${weekLunar}`,
     // 月份
-    month: month,
+    month: Number(month),
     monthStr: getNumString(month),
     // 节气
     solarTerms,
