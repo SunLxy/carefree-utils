@@ -13,7 +13,7 @@ export interface DateObjProps<T> {
   m?: T;
   s?: T;
 }
-export type keyType = 'year' | 'month' | 'date' | 'h' | 'm' | 's';
+export type KeyType = 'year' | 'month' | 'date' | 'h' | 'm' | 's';
 
 export type StrType = 'min' | 'max' | 'maxEqual' | 'minEqual' | 'default';
 

@@ -1,4 +1,4 @@
-import { keyType, StrType, DateObjProps, MoveDateProps } from './interface';
+import { KeyType, StrType, DateObjProps, MoveDateProps } from './interface';
 import { getNumString, getRangeNumber } from './utils';
 /** 日期动 则其他数据进行联动 **/
 class MoveDate {
@@ -111,7 +111,7 @@ class MoveDate {
   // 处理日期的
   private setDateCom = (
     str: StrType,
-    key: keyType,
+    key: KeyType,
     num: number,
     nextFun?: string,
   ) => {
