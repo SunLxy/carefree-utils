@@ -181,6 +181,7 @@ export interface solarTolunarReturn {
   traditionalFestival: string | undefined;
   festival: string | undefined;
   InternationalFestivals: string | undefined;
+  currentType: 'current' | 'next' | 'pre';
 }
 
 const getObjLunarDate = (
@@ -230,6 +231,7 @@ export const solarTolunar = (
   month: string | number,
   date: string | number,
   terms: GetMonthTermReturn,
+  curr: solarTolunarReturn['currentType'],
 ) => {
   const m = getNumString(month);
   const d = getNumString(date);
@@ -293,6 +295,8 @@ export const solarTolunar = (
     InternationalFestivals: InternationalFestivals.get(
       `${getNumString(month)}月${d}日`,
     ),
+    // 表示是 上一个月/当前月/下个月 数据
+    currentType: curr,
   };
 };
 
@@ -302,8 +306,9 @@ export const solarTolunarList = (
   month: number | string,
   list: (string | number)[],
   terms: GetMonthTermReturn,
+  curr: solarTolunarReturn['currentType'],
 ) => {
   return list.map((key) => {
-    return solarTolunar(year, month, key, terms);
+    return solarTolunar(year, month, key, terms, curr);
   });
 };

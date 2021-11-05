@@ -27,7 +27,6 @@ class PaneDate {
   private nextMonth: number = undefined;
   private nextPush: solarTolunarReturn[] = [];
   private nextTerm: GetMonthTermReturn = {};
-
   // 是否需要前后其他月份日期填充
   private isFill: boolean = true;
 
@@ -67,6 +66,7 @@ class PaneDate {
       this.month,
       getRangeNumber(1, this.monthNum + 1),
       this.term,
+      'current',
     );
     if (this.firstWeek > 0 && this.isFill) {
       this.prePush = solarTolunarList(
@@ -77,6 +77,7 @@ class PaneDate {
           this.preMonthNum + 1,
         ),
         this.preTerm,
+        'pre',
       );
       this.panelData = this.prePush.concat(this.panelData);
     }
@@ -86,6 +87,7 @@ class PaneDate {
         this.nextMonth,
         getRangeNumber(1, this.lastWeek + 1),
         this.nextTerm,
+        'next',
       );
       this.panelData = this.panelData.concat(this.nextPush);
     }
