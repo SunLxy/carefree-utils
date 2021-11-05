@@ -175,8 +175,10 @@ export interface solarTolunarReturn {
   lunarMonthNickname: string | undefined;
   lunarDate: string | undefined;
   date: string | number | undefined;
+  dateStr: string | number | undefined;
   week: string | undefined;
   month: string | number | undefined;
+  monthStr: string | number | undefined;
   solarTerms: string | undefined;
   traditionalFestival: string | undefined;
   festival: string | undefined;
@@ -281,10 +283,12 @@ export const solarTolunar = (
     lunarDate: dateLunar,
     // 一个月中那天
     date: date,
+    dateStr: d,
     // 星期几
     week: `星期${weekLunar}`,
     // 月份
-    month: getNumString(month),
+    month: month,
+    monthStr: getNumString(month),
     // 节气
     solarTerms,
     // 农历节日

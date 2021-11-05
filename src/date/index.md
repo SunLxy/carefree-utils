@@ -26,8 +26,10 @@ interface solarTolunarReturn {
   lunarMonthNickname: string | undefined;
   lunarDate: string | undefined;
   date: string | number | undefined;
+  dateStr: string | number | undefined;
   week: string | undefined;
   month: string | number | undefined;
+  monthStr: string | number | undefined;
   solarTerms: string | undefined;
   traditionalFestival: string | undefined;
   festival: string | undefined;
