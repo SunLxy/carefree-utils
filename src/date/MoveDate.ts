@@ -153,25 +153,24 @@ class MoveDate {
       monthDay = this.max[key];
       this.dateList[key] = getRangeNumber(
         start,
-        ['date', 'h'].includes(key) ? monthDay + 1 : monthDay,
+        ['date', 'h', 's', 'm'].includes(key) ? monthDay + 1 : monthDay,
       ); // 赋列表展示值
     } else if (str === 'maxEqual') {
       //最大值相等做下一个判断
       if (this[key] === this.max[key]) {
         nextStr = 'maxEqual';
         this.dateStr[key] = getNumString(this.max[key]);
-        start = this.max[key];
+        monthDay = this.max[key];
       } else if (this[key] > this.max[key]) {
         nextStr = 'max';
         this.dateStr[key] = getNumString(this.max[key]);
         monthDay = this.max[key];
       } else {
         this.dateStr[key] = getNumString(this[key]);
-        // monthDay = this[key]
       }
       this.dateList[key] = getRangeNumber(
         start,
-        ['date', 'h'].includes(key) ? monthDay + 1 : monthDay,
+        ['date', 'h', 's', 'm'].includes(key) ? monthDay + 1 : monthDay,
       ); // 赋列表展示值
     } else {
       // 默认情况 一直走默认
