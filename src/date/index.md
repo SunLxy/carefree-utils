@@ -32,6 +32,7 @@ interface solarTolunarReturn {
   traditionalFestival: string | undefined;
   festival: string | undefined;
   InternationalFestivals: string | undefined;
+  currentType: 'current' | 'next' | 'pre';
 }
 ```
 

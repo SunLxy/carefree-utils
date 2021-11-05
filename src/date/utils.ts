@@ -280,7 +280,7 @@ export const solarTolunar = (
     // 农历 几号
     lunarDate: dateLunar,
     // 一个月中那天
-    date: d,
+    date: date,
     // 星期几
     week: `星期${weekLunar}`,
     // 月份
