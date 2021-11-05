@@ -2,7 +2,7 @@ export const getNumString = (value: number | string) => {
   if (typeof value === 'number' && value < 10) {
     return `0${value}`;
   } else if (typeof value === 'string' && Number(value) < 10) {
-    return `0${value}`;
+    return `0${Number(value)}`;
   }
   return value;
 };
@@ -166,31 +166,27 @@ const numString = [
 ];
 
 export interface solarTolunarReturn {
-  year: string | number;
-  lunarYear: string;
-  lunarTg: string;
-  lunarZodiac: string;
-  lunarMonth: string;
-  lunarMonthNickname: string;
-  lunarDate: string;
-  date: string | number;
-  week: string;
-  month: string | number;
-  solarTerms: string;
-  traditionalFestival: string;
-  festival: string;
-  InternationalFestivals: string;
+  year: string | number | undefined;
+  lunarYear: string | undefined;
+  lunarTg: string | undefined;
+  lunarZodiac: string | undefined;
+  lunarMonth: string | undefined;
+  lunarMonthNickname: string | undefined;
+  lunarDate: string | undefined;
+  date: string | number | undefined;
+  week: string | undefined;
+  month: string | number | undefined;
+  solarTerms: string | undefined;
+  traditionalFestival: string | undefined;
+  festival: string | undefined;
+  InternationalFestivals: string | undefined;
 }
 
-// 阳历转农历日期
-export const solarTolunar = (
+const getObjLunarDate = (
   year: number | string,
-  month: string | number,
-  date: string | number,
-  terms: GetMonthTermReturn,
+  m: string | number,
+  d: string | number,
 ) => {
-  const m = getNumString(month);
-  const d = getNumString(date);
   const newDate = new Date(`${year}-${m}-${d}`);
   const str = new Intl.DateTimeFormat('zh-u-ca-chinese', {
     dateStyle: 'full',
@@ -202,6 +198,49 @@ export const solarTolunar = (
   const zodiac = ZodiacStr.slice(findIndex, findIndex + 1);
   const monthIndex = numString.indexOf(monthLunar);
   const monthNickname = monString.slice(monthIndex, monthIndex + 1);
+  return {
+    yearLunar,
+    monthLunar,
+    dateLunar,
+    weekLunar,
+    lunarYear,
+    tg,
+    dz,
+    zodiac,
+    monthNickname,
+  };
+};
+
+const addDays = (dates: string, days: number) => {
+  let currentDate = new Date(dates);
+  currentDate.setDate(currentDate.getDate() + days);
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const date = currentDate.getDate();
+  const h = currentDate.getHours();
+  const m = currentDate.getMinutes();
+  const s = currentDate.getSeconds();
+  return { year, month, date, h, m, s };
+};
+
+// 阳历转农历日期
+export const solarTolunar = (
+  year: number | string,
+  month: string | number,
+  date: string | number,
+  terms: GetMonthTermReturn,
+) => {
+  const m = getNumString(month);
+  const d = getNumString(date);
+  const {
+    monthLunar,
+    dateLunar,
+    weekLunar,
+    tg,
+    zodiac,
+    monthNickname,
+    lunarYear,
+  } = getObjLunarDate(year, m, d);
   const { index1, index2, solarTerm1, solarTerm2 } = terms;
   let solarTerms = undefined;
   if (index1 === Number(d) - 1) {
@@ -209,6 +248,22 @@ export const solarTolunar = (
   } else if (index2 === Number(d) - 1) {
     solarTerms = solarTerm2;
   }
+  // 找除夕
+  // 判断农历29号30号
+  let traditionalFestivalStr = traditionalFestival.get(
+    `${monthLunar}月${dateLunar}`,
+  );
+  if (`${monthLunar}月${dateLunar}` === '腊月三十') {
+    traditionalFestivalStr = '除夕';
+  } else if (`${monthLunar}月${dateLunar}` === '腊月廿九') {
+    // 判断是否存在30
+    const { year: y, month: mo, date } = addDays(`${year}-${m}-${d}`, 1);
+    const { monthLunar, dateLunar } = getObjLunarDate(y, mo, date);
+    if (`${monthLunar}月${dateLunar}` !== '腊月三十') {
+      traditionalFestivalStr = '除夕';
+    }
+  }
+
   return {
     year: year,
     lunarYear: lunarYear,
@@ -230,7 +285,7 @@ export const solarTolunar = (
     // 节气
     solarTerms,
     // 农历节日
-    traditionalFestival: traditionalFestival.get(`${monthLunar}月${dateLunar}`),
+    traditionalFestival: traditionalFestivalStr,
     // 阳历节日
     festival: festival.get(`${getNumString(month)}月${d}日`),
     // 世界节日
