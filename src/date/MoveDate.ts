@@ -28,13 +28,12 @@ class MoveDate {
   private init = (props: MoveDateProps) => {
     ['max', 'min'].forEach((key) => {
       if (Reflect.has(props, key)) {
-        // console.log(key, this.analysisDate(props[key]))
         this[key] = this.analysisDate(props[key]);
       }
     });
   };
-  move = (date: string) => {
-    const result = this.analysisDate(date);
+  move = (date?: string) => {
+    const result = this.analysisDate(date || new Date());
     Object.entries(result).forEach(([key, value]) => {
       this[key] = value;
     });
@@ -47,7 +46,7 @@ class MoveDate {
     };
   };
   // 解析出数据
-  private analysisDate = (dates: string) => {
+  private analysisDate = (dates: string | Date) => {
     const currentDate = new Date(dates);
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1;

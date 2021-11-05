@@ -93,8 +93,12 @@ class PaneDate {
     }
   };
 
-  getPaneDate = (year: number, month: number, isFill: boolean = true) => {
-    this.init(year, month, isFill);
+  getPaneDate = (year?: number, month?: number, isFill?: boolean) => {
+    // 不传默认当年当月
+    let currentYear = year || new Date().getFullYear();
+    let currentMonth = month || new Date().getMonth() + 1;
+    let currentIsFill = typeof isFill === 'boolean' ? isFill : true;
+    this.init(currentYear, currentMonth, currentIsFill);
     this.calcNum();
     return this.panelData;
   };
