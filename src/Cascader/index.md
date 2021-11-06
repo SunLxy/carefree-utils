@@ -34,7 +34,6 @@ const Item = (props) => {
   const onClick = (item) => {
     const { isChild } = item;
     if (isChild) {
-      const lg = arr.length;
       const arrs = arr.slice(0, index + 1);
       arrs[index] = { ...item };
       arrs.push({});
@@ -43,13 +42,25 @@ const Item = (props) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        borderRight: '1px solid #ccc',
+        paddingLeft: 10,
+        paddingRight: 10,
+      }}
+    >
       {data.map((item, key) => {
         return (
           <div
             key={key}
             onClick={onClick.bind(this, item)}
-            style={{ height: 30, width: 100 }}
+            style={{
+              height: 30,
+              width: 100,
+              lineHeight: '30px',
+              borderBottom: '1px solid #ccc',
+              cursor: 'pointer',
+            }}
           >
             {item.label}
           </div>
@@ -60,7 +71,10 @@ const Item = (props) => {
 };
 
 export default () => {
-  const [arr, setArr] = React.useState([{}]);
+  const [arr, setArr] = React.useState([
+    { label: '测试6', value: 6, isChild: true },
+    {},
+  ]);
   const cascader = React.useMemo(
     () =>
       new Cascader({
@@ -82,11 +96,27 @@ export default () => {
             label: '测试6',
             value: 6,
             children: [
-              { label: '测试7', value: 7 },
+              {
+                label: '测试7',
+                value: 7,
+                children: [{ label: '测试10', value: 10 }],
+              },
               {
                 label: '测试8',
                 value: 8,
-                children: [{ label: '测试9', value: 9 }],
+                children: [
+                  {
+                    label: '测试9',
+                    value: 9,
+                    children: [
+                      {
+                        label: '测试11',
+                        value: 11,
+                        children: [{ label: '测试12', value: 12 }],
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
