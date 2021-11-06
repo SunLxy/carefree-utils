@@ -30,13 +30,18 @@ import { Cascader } from 'carefree-utils';
 import React from 'react';
 
 const Item = (props) => {
-  const { data, index, setArr, arr } = props;
-  const onClick = (item) => {
+  const { data, index, setArr, arr, checkKey } = props;
+  const onClick = (item, check) => {
     const { isChild } = item;
+
+    const arrs = arr.slice(0, index + 1);
+    arrs[index] = { ...item };
     if (isChild) {
-      const arrs = arr.slice(0, index + 1);
-      arrs[index] = { ...item };
+      // 有子项数据再加一个用于渲染
       arrs.push({});
+    }
+    // 选中的不用再次进行更新状态
+    if (!check) {
       setArr(arrs);
     }
   };
@@ -53,13 +58,15 @@ const Item = (props) => {
         return (
           <div
             key={key}
-            onClick={onClick.bind(this, item)}
+            onClick={onClick.bind(this, item, checkKey === item.value)}
             style={{
               height: 30,
               width: 100,
               lineHeight: '30px',
               borderBottom: '1px solid #ccc',
               cursor: 'pointer',
+              background: checkKey === item.value ? 'red' : 'none',
+              color: checkKey === item.value ? '#fff' : '#000',
             }}
           >
             {item.label}
@@ -75,6 +82,7 @@ export default () => {
     { label: '测试6', value: 6, isChild: true },
     {},
   ]);
+
   const cascader = React.useMemo(
     () =>
       new Cascader({
@@ -141,6 +149,7 @@ export default () => {
               data={cascader.getLayerData(1)}
               setArr={setArr}
               arr={arr}
+              checkKey={arr[key].value}
             />
           );
         }
@@ -150,6 +159,7 @@ export default () => {
             index={key}
             data={cascader.getChildData(arr[key - 1].value)}
             setArr={setArr}
+            checkKey={arr[key].value}
             arr={arr}
           />
         );
