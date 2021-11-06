@@ -78,14 +78,17 @@ const Item = (props) => {
 };
 
 export default () => {
+  // 每列选中数据存储 默认最少一个，
   const [arr, setArr] = React.useState([
     { label: '测试6', value: 6, isChild: true },
     {},
   ]);
 
+  // 对 原始数据进行处理
   const cascader = React.useMemo(
     () =>
       new Cascader({
+        // 原始数据
         data: [
           {
             label: '测试',
@@ -129,6 +132,7 @@ export default () => {
             ],
           },
         ],
+        // 主键
         rowKey: 'value',
       }),
     [],
@@ -142,6 +146,7 @@ export default () => {
     <div style={{ display: 'flex' }}>
       {arr.map((item, key) => {
         if (key === 0) {
+          // 第一个默认取 层级数据 第一级数据
           return (
             <Item
               key={key}
@@ -153,6 +158,7 @@ export default () => {
             />
           );
         }
+        // 其他情况取上一级的主键值 从子项数据取
         return (
           <Item
             key={key}

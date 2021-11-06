@@ -36,7 +36,7 @@ class Cascader {
   private init = () => {
     this.deepTree(this.tree, 1);
   };
-  // 递归数据进行存储
+  // 递归数据进行存储  layer 层级
   private deepTree = (tree: CascaderItemProps[], layer: number) => {
     tree.forEach((item) => {
       const { children, ...rest } = item;
@@ -52,6 +52,7 @@ class Cascader {
         this.treeKeyToChildMap.set(rowKey, this.mapList(children));
         this.deepTree(item.children, layer + 1);
       }
+      // 存层级数据
       let layerArr = this.treeLayerMap.get(layer) || [];
       layerArr.push({ ...rest, isChild });
       this.treeLayerMap.set(layer, layerArr);
@@ -74,7 +75,7 @@ class Cascader {
   // 获取单个或者全部处理后Map数据
   getChildData = (rowKey?: KeyType) => {
     if (typeof rowKey === 'number' || typeof rowKey === 'string') {
-      return this.treeKeyToChildMap.get(rowKey);
+      return this.treeKeyToChildMap.get(rowKey) || [];
     }
     return this.treeKeyToChildMap;
   };
@@ -95,7 +96,7 @@ class Cascader {
   // 获取层级数据
   getLayerData = (layer?: number) => {
     if (typeof layer === 'number') {
-      return this.treeLayerMap.get(layer);
+      return this.treeLayerMap.get(layer) || [];
     }
     return this.treeLayerMap;
   };
