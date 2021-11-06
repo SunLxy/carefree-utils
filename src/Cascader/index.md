@@ -30,7 +30,7 @@ import { Cascader } from 'carefree-utils';
 import React from 'react';
 
 const Item = (props) => {
-  const { data, index, setArr, arr, checkKey } = props;
+  const { data, index, setArr, arr, checkKey, className = '' } = props;
   const onClick = (item, check) => {
     const { isChild } = item;
 
@@ -52,7 +52,9 @@ const Item = (props) => {
         borderRight: '1px solid #ccc',
         paddingLeft: 10,
         paddingRight: 10,
+        overflow: 'hidden',
       }}
+      className={className}
     >
       {data.map((item, key) => {
         return (
@@ -78,6 +80,24 @@ const Item = (props) => {
 };
 
 export default () => {
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+    .div2{
+      animation: 1s in-out forwards;
+    }
+    @keyframes in-out {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 100px;
+      }
+    }`;
+    style.type = 'text/css';
+    document.head.append(style);
+  }, []);
+
   // 每列选中数据存储 默认最少一个，
   const [arr, setArr] = React.useState([
     { label: '测试6', value: 6, isChild: true },
@@ -154,7 +174,7 @@ export default () => {
               data={cascader.getLayerData(1)}
               setArr={setArr}
               arr={arr}
-              checkKey={arr[key].value}
+              checkKey={item.value}
             />
           );
         }
@@ -165,7 +185,8 @@ export default () => {
             index={key}
             data={cascader.getChildData(arr[key - 1].value)}
             setArr={setArr}
-            checkKey={arr[key].value}
+            checkKey={item.value}
+            className={Object.keys(item).length ? '' : 'div2'}
             arr={arr}
           />
         );
