@@ -16,9 +16,7 @@ export interface CascaderProps {
 
 class Cascader {
   // 主键字段
-  private rowKey:
-    | KeyType
-    | ((item: CascaderItemProps, layer: number) => string) = undefined;
+  private rowKey: CascaderProps['rowKey'] = 'value';
   // 原始数据
   private tree: CascaderItemProps[] = [];
   // rowKey 对应的子项数据
