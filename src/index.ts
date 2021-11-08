@@ -13,3 +13,6 @@ export * from './date';
 
 export { default as Cascader } from './Cascader';
 export * from './Cascader';
+
+export { default as clone } from './clone';
+export * from './clone';
