@@ -258,7 +258,11 @@ class Tree {
     let i = 0;
     while (i < lg) {
       // 如果存在禁用数据， 这里要做处理  排除禁用的数据才能算数
-      if (Array.isArray(this.AllKeys) && this.AllKeys.includes(childList[i])) {
+      if (
+        Array.isArray(this.AllKeys) &&
+        this.AllKeys.includes(childList[i]) &&
+        !this.disableId.includes(childList[i])
+      ) {
         fig = true; // 不在里面
         break;
       }
@@ -277,11 +281,14 @@ class Tree {
       const check = this.mapCheckFalse(childList);
       // 只有半选和 移出 半选 全选
       if (check) {
+        // 存在一个在全选中
         // 全选中存在  因为这是取消 所有不会存在加入全选数据中
         this.HalfKeys = this.HalfKeys.concat([key]);
       } else {
         this.HalfKeys = this.filterData(this.HalfKeys, key);
       }
+      // 全选中去除当期项
+      this.AllKeys = this.filterData(this.AllKeys as KeyType[], key);
     });
   };
 

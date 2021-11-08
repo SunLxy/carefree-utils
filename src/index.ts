@@ -1,4 +1,4 @@
-export { getCheckedTrue, getCheckedFalse, getParentChildKey } from './Tree/old';
+export { initTreeMap, CheckedTreeTrue, checkTreeFalse } from './Tree/old';
 
 export { default as Tree } from './Tree';
 export * from './Tree';
