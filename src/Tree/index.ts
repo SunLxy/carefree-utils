@@ -82,8 +82,8 @@ class Tree {
     if (Array.isArray(props.HalfKeys)) {
       this.HalfKeys = props.HalfKeys;
     }
-    if (Array.isArray(props.AllKeys)) {
-      this.AllKeys = props.AllKeys;
+    if (Reflect.has(props, 'AllKeys')) {
+      this.AllKeys = Reflect.get(props, 'AllKeys');
     }
     if (typeof props.isCancelParenthalf === 'boolean') {
       this.isCancelParenthalf = props.isCancelParenthalf;
@@ -231,7 +231,7 @@ class Tree {
         HalfKeys: [],
       };
     }
-    // 一下走正常情况
+    // 以下走正常情况
     const childList = (this.parentToADeepChild.get(rowKey) || []).concat([
       rowKey,
     ]);
@@ -310,7 +310,7 @@ class Tree {
         HalfKeys: [],
       };
     }
-    // 一下走正常情况
+    // 以下走正常情况
     const childList = (this.parentToADeepChild.get(rowKey) || []).concat([
       rowKey,
     ]);
