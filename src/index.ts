@@ -16,3 +16,5 @@ export * from './Cascader';
 
 export { default as clone } from './clone';
 export * from './clone';
+
+export { default as groupBy } from './groupBy';
