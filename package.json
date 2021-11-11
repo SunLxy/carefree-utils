@@ -1,6 +1,6 @@
 {
   "name": "carefree-utils",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "只做原生js方法 不依赖其他包",
   "scripts": {
     "start": "dumi dev",
