@@ -39,7 +39,8 @@ class PaneDate {
     this.monthNum = new Date(this.year, this.month, 0).getDate();
     this.firstWeek = new Date(`${this.year}-${this.month}-01`).getDay();
     this.lastWeek =
-      6 - new Date(`${this.year}=${this.month}-${this.monthNum}`).getDay();
+      6 - new Date(`${this.year}-${this.month}-${this.monthNum}`).getDay();
+
     // 判断当前月份是否是1月
     if (this.month === 1) {
       this.preYear = this.year - 1;
@@ -83,7 +84,6 @@ class PaneDate {
         this.env,
         'pre',
       );
-
       this.panelData = this.prePush.concat(this.panelData);
     }
     if (this.lastWeek <= 6 && this.isFill) {
