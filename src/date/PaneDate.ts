@@ -8,7 +8,7 @@ import {
 // 输入年月 获取 面板展示日期
 class PaneDate {
   // 天   一   二   三   四   五   六
-  private panelData: solarTolunarReturn[] = [];
+  private panelData: (solarTolunarReturn | number | string)[] = [];
   private year: number = undefined;
   private month: number = undefined;
   private firstWeek: number = undefined;
@@ -20,15 +20,17 @@ class PaneDate {
   private preYear: number = undefined;
   private preMonth: number = undefined;
   private preMonthNum: number = undefined;
-  private prePush: solarTolunarReturn[] = [];
+  private prePush: (solarTolunarReturn | number | string)[] = [];
   private preTerm: GetMonthTermReturn = {};
   // 下个月天数
   private nextYear: number = undefined;
   private nextMonth: number = undefined;
-  private nextPush: solarTolunarReturn[] = [];
+  private nextPush: (solarTolunarReturn | number | string)[] = [];
   private nextTerm: GetMonthTermReturn = {};
   // 是否需要前后其他月份日期填充
   private isFill: boolean = true;
+
+  private env: 'rn' | 'window';
 
   private init = (year: number, month: number, isFill: boolean = true) => {
     this.year = year;
@@ -66,6 +68,7 @@ class PaneDate {
       this.month,
       getRangeNumber(1, this.monthNum + 1),
       this.term,
+      this.env,
       'current',
     );
     if (this.firstWeek > 0 && this.isFill) {
@@ -77,8 +80,10 @@ class PaneDate {
           this.preMonthNum + 1,
         ),
         this.preTerm,
+        this.env,
         'pre',
       );
+
       this.panelData = this.prePush.concat(this.panelData);
     }
     if (this.lastWeek <= 6 && this.isFill) {
@@ -87,17 +92,24 @@ class PaneDate {
         this.nextMonth,
         getRangeNumber(1, this.lastWeek + 1),
         this.nextTerm,
+        this.env,
         'next',
       );
       this.panelData = this.panelData.concat(this.nextPush);
     }
   };
-
-  getPaneDate = (year?: number, month?: number, isFill?: boolean) => {
+  // env 必传 RN中不存在 Intl.DateTimeFormat 类
+  getPaneDate = (
+    env: 'rn' | 'window',
+    year?: number,
+    month?: number,
+    isFill?: boolean,
+  ) => {
     // 不传默认当年当月
     let currentYear = year || new Date().getFullYear();
     let currentMonth = month || new Date().getMonth() + 1;
     let currentIsFill = typeof isFill === 'boolean' ? isFill : true;
+    this.env = env;
     this.init(currentYear, currentMonth, currentIsFill);
     this.calcNum();
     return this.panelData;

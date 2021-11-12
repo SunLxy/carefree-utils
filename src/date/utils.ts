@@ -168,22 +168,22 @@ const numString = [
 
 export interface solarTolunarReturn {
   year: string | number | undefined;
-  lunarYear: string | undefined;
-  lunarTg: string | undefined;
-  lunarZodiac: string | undefined;
-  lunarMonth: string | undefined;
-  lunarMonthNickname: string | undefined;
-  lunarDate: string | undefined;
+  lunarYear?: string | undefined;
+  lunarTg?: string | undefined;
+  lunarZodiac?: string | undefined;
+  lunarMonth?: string | undefined;
+  lunarMonthNickname?: string | undefined;
+  lunarDate?: string | undefined;
   date: string | number | undefined;
-  dateStr: string | number | undefined;
-  week: string | undefined;
+  dateStr?: string | number | undefined;
+  week?: string | undefined;
   month: string | number | undefined;
-  monthStr: string | number | undefined;
-  solarTerms: string | undefined;
-  traditionalFestival: string | undefined;
-  festival: string | undefined;
-  InternationalFestivals: string | undefined;
-  currentType: 'current' | 'next' | 'pre';
+  monthStr?: string | number | undefined;
+  solarTerms?: string | undefined;
+  traditionalFestival?: string | undefined;
+  festival?: string | undefined;
+  InternationalFestivals?: string | undefined;
+  currentType?: 'current' | 'next' | 'pre';
 }
 
 const getObjLunarDate = (
@@ -237,6 +237,7 @@ export const solarTolunar = (
 ) => {
   const m = getNumString(month);
   const d = getNumString(date);
+
   const {
     monthLunar,
     dateLunar,
@@ -310,9 +311,19 @@ export const solarTolunarList = (
   month: number | string,
   list: (string | number)[],
   terms: GetMonthTermReturn,
+  env: 'rn' | 'window',
   curr: solarTolunarReturn['currentType'],
 ) => {
   return list.map((key) => {
-    return solarTolunar(year, month, key, terms, curr);
+    if (env === 'window') {
+      return solarTolunar(year, month, key, terms, curr);
+    } else {
+      return {
+        date: getNumString(key),
+        year,
+        month: getNumString(month),
+        currentType: curr,
+      };
+    }
   });
 };
