@@ -82,7 +82,10 @@ const getslit = () => {
   console.log('resu5=---', resu5);
 
   for (let i = 0; i < 12; i++) {
-    console.log(`2021年${i + 1}月`, new paneDate().getPaneDate(2021, i + 1));
+    console.log(
+      `2021年${i + 1}月`,
+      new paneDate().getPaneDate('window', 2021, i + 1),
+    );
   }
 };
 getslit();
