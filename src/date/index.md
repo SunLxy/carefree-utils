@@ -69,7 +69,7 @@ const getslit = () => {
     min: '2021-12-14 16:16:26',
     max: '2022-12-14 16:16:26',
   });
-  var resu = dates.move('2022-12-17 15:14:18');
+  var resu = dates.move('2021-11-31 15:14:18');
   var resu2 = dates2.move('2021-09-17 15:14:18');
   var resu3 = dates3.move('2021-12-17 15:14:18');
   var resu4 = dates4.move('2021-12-17');

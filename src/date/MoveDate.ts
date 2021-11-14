@@ -32,8 +32,21 @@ class MoveDate {
       }
     });
   };
+  // 防止日期超出每月的总天数
+  private getPreDate = (date: string | Date) => {
+    if (typeof date === 'string') {
+      const [pre, hours] = date.split(' ');
+      const [year, month, d] = pre.split(/\/|-/);
+      const days = new Date(Number(year), Number(month), 0).getDate();
+      if (Number(d) > days) {
+        return [`${year}-${month}-${days}`, hours].join(' ');
+      }
+    }
+    return date;
+  };
+
   move = (date?: string) => {
-    const result = this.analysisDate(date || new Date());
+    const result = this.analysisDate(this.getPreDate(date || new Date()));
     Object.entries(result).forEach(([key, value]) => {
       this[key] = value;
     });
