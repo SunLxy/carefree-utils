@@ -33,38 +33,39 @@ class PaneDate {
 
   private env: 'rn' | 'window';
 
-  private init = (
-    year: number,
-    month: number | string,
-    isFill: boolean = true,
-  ) => {
+  private init = (year: number, month: number, isFill: boolean = true) => {
     this.year = year;
-    this.month = getNumString(month);
+    this.month = month;
     this.isFill = isFill;
-    this.monthNum = new Date(this.year, Number(this.month), 0).getDate();
-    this.firstWeek = new Date(`${this.year}-${this.month}-01`).getDay();
+    this.monthNum = new Date(this.year, this.month, 0).getDate();
+    this.firstWeek = new Date(
+      `${this.year}-${getNumString(this.month)}-01`,
+    ).getDay();
     this.lastWeek =
-      6 - new Date(`${this.year}-${this.month}-${this.monthNum}`).getDay();
+      6 -
+      new Date(
+        `${this.year}-${getNumString(this.month)}-${this.monthNum}`,
+      ).getDay();
 
     // 判断当前月份是否是1月
-    if (Number(this.month) === 1) {
+    if (this.month === 1) {
       this.preYear = this.year - 1;
       this.nextYear = this.year;
-      this.nextMonth = Number(this.month) + 1;
+      this.nextMonth = this.month + 1;
       this.preMonth = 12;
-    } else if (Number(this.month) === 12) {
+    } else if (this.month === 12) {
       this.preYear = this.year;
-      this.preMonth = Number(this.month) - 1;
+      this.preMonth = this.month - 1;
       this.nextYear = this.year + 1;
       this.nextMonth = 1;
     } else {
       this.preYear = this.year;
       this.nextYear = this.year;
-      this.nextMonth = Number(this.month) + 1;
-      this.preMonth = Number(this.month) - 1;
+      this.nextMonth = this.month + 1;
+      this.preMonth = this.month - 1;
     }
     this.preTerm = getMonthTerm(this.preYear, this.preMonth - 1);
-    this.term = getMonthTerm(this.year, Number(this.month) - 1);
+    this.term = getMonthTerm(this.year, this.month - 1);
     this.nextTerm = getMonthTerm(this.nextYear, this.nextMonth - 1);
     this.preMonthNum = new Date(this.preYear, this.preMonth, 0).getDate();
   };
@@ -72,7 +73,7 @@ class PaneDate {
     this.panelData = solarTolunarList(
       this.year,
       this.month,
-      getRangeNumber(1, Number(this.monthNum) + 1),
+      getRangeNumber(1, this.monthNum + 1),
       this.term,
       this.env,
       'current',
@@ -106,13 +107,13 @@ class PaneDate {
   // env 必传 RN中不存在 Intl.DateTimeFormat 类
   getPaneDate = (
     env: 'rn' | 'window',
-    year?: number,
-    month?: number,
+    year?: number | string,
+    month?: number | string,
     isFill?: boolean,
   ) => {
     // 不传默认当年当月
-    let currentYear = year || new Date().getFullYear();
-    let currentMonth = month || new Date().getMonth() + 1;
+    let currentYear = Number(year || new Date().getFullYear());
+    let currentMonth = Number(month || new Date().getMonth() + 1);
     let currentIsFill = typeof isFill === 'boolean' ? isFill : true;
     this.env = env;
     this.init(currentYear, currentMonth, currentIsFill);
