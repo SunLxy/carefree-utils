@@ -17,39 +17,6 @@ export interface Festival {
   secondFestivalName?: string; // 第二个节日名称
   secondFestivalEnName?: string; // 第二个节日英文名称
 }
-export interface Solar2LunarReturn {
-  // 以下都是返回值
-  lunarYear?: number; // 阴历年份数字
-  lunarYearCN?: string; // 阴历年份的汉字（举例：一九八九）
-  lunarMonthDays?: number; // 该阴历月的天数（取阴历天数）
-  fullLunarMonthString?: string; // 阴历月份 + 阴历日期 （举例：正月初一）
-  zodiac?: string; // 生肖
-  IMonthCn?: string; // 阴历月份汉字，含闰月
-  IDayCn?: string; // 阴历天汉字
-  solarYear?: number; // 阳历年数字
-  solarYearCN?: string; // 阳历年份的汉字（举例：一九八九）
-  solarMonthDays?: number; // 该阳历月份的天数
-  gzYear?: string; // 干支年（举例2020 庚子年）
-  gzMonth?: string; // 干支月 (举例2020年5月 辛巳月)
-  gzDay?: string; // 干支日 （举例2020年5月1日 癸酉日）
-  isToday?: boolean; // 是否今天
-  isLeapMonth?: boolean; // 该月是否闰月
-  isLeapYear?: boolean; // 阳历年是否闰年
-  nWeek?: number | string; // 星期数字
-  ncWeek?: string; // 星期汉字（举例：星期六）
-  Term?: string; // 节气名词
-  constellation?: string; // 星座汉字
-  GzNy?: string; // 该阴历年的干支纳音
-  astroEn?: string; // 星座的英文
-  lunarMonth?: number; // 阴历月份数字
-  lunarDay?: number; // 阴历天数字
-  solarMonth?: string | number; // 阳历月数字
-  solarDay?: number; // 阳历天数字
-  isTerm?: boolean; // 是否节气
-  isFestival?: false; // 是否是节日
-  festivalName?: string; // 节日中文
-  festivalEnName?: string; // 节日英文
-}
 
 /** 节日列表 **/
 export const FestivalArray: Festival[] = [

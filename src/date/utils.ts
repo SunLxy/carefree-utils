@@ -1,4 +1,4 @@
-import Solar2lunar, { Solar2LunarReturn } from './../Solarday2lunarday';
+import Solar2lunar, { Solar2LunarReturn } from '../Solar2lunar';
 export const getNumString = (value: number | string) => {
   if (typeof value === 'number' && value < 10) {
     return `0${value}`;
@@ -37,7 +37,7 @@ export const solarTolunarList = (
   curr: solarTolunarReturn['currentType'],
 ) => {
   return list.map((key) => {
-    const result = Solar2lunar.solar2lunar(year, month, key) || {};
+    const result = new Solar2lunar().solar2lunar(year, month, key) || {};
     return {
       ...result,
       date: getNumString(key),

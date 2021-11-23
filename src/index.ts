@@ -19,5 +19,5 @@ export * from './clone';
 
 export { default as groupBy } from './groupBy';
 
-export { default as Solar2lunar } from './Solarday2lunarday';
-export * from './Solarday2lunarday';
+export { default as Solar2lunar } from './Solar2lunar';
+export * from './Solar2lunar';

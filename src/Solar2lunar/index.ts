@@ -1,8 +1,9 @@
-// 阳历转农历
+// > 阳历和农历互转 从这个[solarday2lunarday](https://github.com/liquanjiang/solarday2lunarday) 中搬来改造的，去除了 dayjs
 import utils from './utils';
-import { Festival, Solar2LunarReturn } from './festival';
-export type { Solar2LunarReturn };
-export class Solarday2lunarday {
+import { Festival } from './festival';
+export * from './interface.d';
+export type { Festival };
+class Solar2lunar {
   /**
    * 数字与中文照表
    * Unicode编码数组
@@ -339,7 +340,6 @@ export class Solarday2lunarday {
   /**
    * 传入阳历年份，获取该年的所有节日，节日列表同 FestivalArray 中所列举
    * @return []
-   *
    * @param solarYear: string | number
    */
   getAllFestival(solarYear: number | string) {
@@ -451,7 +451,7 @@ export class Solarday2lunarday {
    * @param Day
    */
   solar2lunar(
-    Year?: number | string | Date,
+    Year: number | string | Date,
     Month?: number | string,
     Day?: number | string,
   ) {
@@ -719,10 +719,10 @@ export class Solarday2lunarday {
     year: number,
     month: number,
     date: number,
-    isLeapM: boolean,
+    isLeapM?: boolean,
   ): any {
     //参数区间1901正月初一 ~ 2099年冬月二十
-    const isLeapMonth = isLeapM; // 是否闰月
+    const isLeapMonth = isLeapM || false; // 是否闰月
     const leapMonth = this.leapMonth(year);
 
     if (year < 1901 || year > 2099) {
@@ -793,4 +793,4 @@ export class Solarday2lunarday {
     return this.solar2lunar(cY, cM, cD);
   }
 }
-export default new Solarday2lunarday();
+export default Solar2lunar;
