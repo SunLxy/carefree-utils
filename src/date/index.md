@@ -17,24 +17,12 @@ interface MoveDateProps {
 }
 
 // paneDate 返回数组中单个数据参数
-interface solarTolunarReturn {
+export interface solarTolunarReturn extends Solar2LunarReturn {
   year: string | number | undefined;
-  lunarYear: string | undefined;
-  lunarTg: string | undefined;
-  lunarZodiac: string | undefined;
-  lunarMonth: string | undefined;
-  lunarMonthNickname: string | undefined;
-  lunarDate: string | undefined;
   date: string | number | undefined;
-  dateStr: string | number | undefined;
-  week: string | undefined;
   month: string | number | undefined;
-  monthStr: string | number | undefined;
-  solarTerms: string | undefined;
-  traditionalFestival: string | undefined;
-  festival: string | undefined;
-  InternationalFestivals: string | undefined;
-  currentType: 'current' | 'next' | 'pre';
+  currentType?: 'current' | 'next' | 'pre';
+  [K: string]: any;
 }
 ```
 
@@ -82,10 +70,7 @@ const getslit = () => {
   console.log('resu5=---', resu5);
 
   for (let i = 0; i < 12; i++) {
-    console.log(
-      `2021年${i + 1}月`,
-      new paneDate().getPaneDate('window', 2021, i + 1),
-    );
+    console.log(`2021年${i + 1}月`, new paneDate().getPaneDate(2021, i + 1));
   }
 };
 getslit();
