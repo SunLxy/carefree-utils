@@ -8,7 +8,9 @@ title: Get
 
 ```tsx
 import { get } from 'carefree-utils';
-
+if (window) {
+  window.get = get;
+}
 const obj = {
   a: { b: { c: 12 } },
   b: { c: { d: { e: 23 } } },

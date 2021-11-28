@@ -8,7 +8,9 @@ title: Clone
 
 ```tsx
 import { clone } from 'carefree-utils';
-
+if (window) {
+  window.clone = clone;
+}
 const a = [1, 2, 3, 4, 5, 6, 7, 8];
 const b = a;
 const c = clone(b);

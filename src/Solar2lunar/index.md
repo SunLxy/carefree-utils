@@ -21,6 +21,11 @@ export type Solar2LunarType = (
 ```tsx
 import React from 'react';
 import { Solar2lunar, Solar2LunarReturn } from 'carefree-utils';
+
+if (window) {
+  window.Solar2lunar = Solar2lunar;
+}
+
 const solar2lunar: Solar2LunarReturn = new Solar2lunar().solar2lunar(
   2021,
   11,

@@ -8,7 +8,10 @@ title: Set
 
 ```tsx
 import { set, get } from 'carefree-utils';
-
+if (window) {
+  window.get = get;
+  window.set = set;
+}
 let obj = {};
 let obj2 = {};
 let cuObj = { a: 123 };

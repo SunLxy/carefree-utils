@@ -29,6 +29,10 @@ export interface CascaderProps {
 import { Cascader } from 'carefree-utils';
 import React from 'react';
 
+if (window) {
+  window.Cascader = Cascader;
+}
+
 const Item = (props) => {
   const { data, index, setArr, arr, checkKey, className = '' } = props;
   const onClick = (item, check) => {
