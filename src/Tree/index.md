@@ -171,6 +171,7 @@ export default () => {
   );
 
   const onClick = () => {
+    console.log('测试模糊查询', init.search('测试四级', 'label'));
     console.log(
       '打印选中情况',
       init.onCheck({ label: '测试三级5', value: '3-0-1' }),

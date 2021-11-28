@@ -62,6 +62,11 @@ class Tree {
   /** 半选数据  半选的时候不会存在单选 只处理多选情况 */
   private HalfKeys: KeyType[] = [];
 
+  /** 模糊查询 */
+  private searchKey: string = undefined;
+  /** 模糊查询 字段 */
+  private searchKeyField: RowKeyType = this.rowKey;
+
   constructor(props: TreeProps) {
     this.init(props || { treeData: [] });
   }
@@ -123,7 +128,8 @@ class Tree {
       this.childToDeepParent.set(rowKey, parent);
     }
   };
-  // 获取处理后的数据
+
+  /** 获取处理后的数据 */
   getInitMap = () => {
     return {
       /**  1.  父级对应所有子集 */
@@ -134,25 +140,25 @@ class Tree {
       childToDeepParent: this.childToDeepParent,
     };
   };
-  // 获取主键值
+  /**获取主键值  */
   getRowKey = (item: TreeItem) => {
     return typeof this.rowKey === 'function'
       ? this.rowKey(item)
       : item[this.rowKey];
   };
 
-  // 判断是否选中
+  /** 判断是否选中 */
   isCheck = (item: TreeItem) => {
     if (Array.isArray(this.AllKeys) && this.multiple) {
       return this.AllKeys.includes(this.getRowKey(item));
     }
     return this.AllKeys === this.getRowKey(item);
   };
-  // 判断是否半选
+  /** 判断是否半选 */
   isCheckHalf = (item: TreeItem) => {
     return this.HalfKeys.includes(this.getRowKey(item));
   };
-  //  判断是否禁用
+  /** 判断是否禁用 */
   isDisabled = (item: TreeItem) => {
     return this.disableId.includes(this.getRowKey(item));
   };
@@ -206,7 +212,7 @@ class Tree {
     });
   };
 
-  // 选中数据处理
+  /** 选中数据处理 */
   checkTrue = (item: TreeItem) => {
     // 这块要做返回
     // 就是往上走 找父级的子集是否都在全选中 如果是则放入全选 如果不是放入半选    半选的父级一直半选
@@ -292,7 +298,7 @@ class Tree {
     });
   };
 
-  // 取消选中数据处理
+  /** 取消选中数据处理 */
   checkFalse = (item: TreeItem) => {
     // / 这块要做返回
     // 当前项和其子项删除半选和全选
@@ -339,6 +345,55 @@ class Tree {
         ),
       ),
     };
+  };
+
+  /** 判断查询值是否相等 */
+  private checkSearchKey = (item: TreeItem) => {
+    const field =
+      typeof this.searchKeyField === 'function'
+        ? this.searchKeyField(item)
+        : this.searchKeyField;
+    const { [field]: value } = item;
+    const Rg = new RegExp(`${this.searchKey}`, 'g');
+    return Rg.test(value);
+  };
+
+  /** 递归树 模糊查询数据 */
+  private deepSearch = (tree: TreeItem[]) => {
+    return tree.filter((item) => {
+      const { [this.childField]: children, ...rest } = item;
+      let list = [];
+      let obj = { ...rest };
+      // 判断value值是否相等
+      const fig = this.checkSearchKey(item);
+      if (Array.isArray(children)) {
+        list = this.deepSearch(children);
+        if (list.length) {
+          obj[this.childField] = list;
+        }
+      }
+      if (fig || list.length) {
+        return true;
+      }
+      return false;
+    });
+  };
+
+  /**
+   * @description: 模糊查询
+   * @param {string} key 模糊值
+   * @param {string} keyField 模糊查询字段
+   * @return {*}
+   */
+  search = (key: string, keyField?: RowKeyType) => {
+    // 值没有返回原始数据
+    if (!key) {
+      return this.treeData;
+    }
+    this.searchKey = key;
+    this.searchKeyField = keyField || this.rowKey;
+    const result = this.deepSearch(this.treeData);
+    return result;
   };
 
   // 点击选中 取消事件
