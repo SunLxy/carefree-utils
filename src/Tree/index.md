@@ -10,7 +10,7 @@ title: Tree
 
 ### branchKey
 
-> 区分出半选和全选的数据
+> 传递一个 key 数组 --> 区分出半选和全选的数据
 
 ### getRowKey
 
