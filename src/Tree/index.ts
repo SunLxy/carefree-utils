@@ -70,6 +70,25 @@ class Tree {
   constructor(props: TreeProps) {
     this.init(props || { treeData: [] });
   }
+  /** 获取内部存储的状态值 */
+  get store() {
+    return {
+      rowKey: this.rowKey,
+      treeData: this.treeData,
+      childField: this.childField,
+      disableId: this.disableId,
+      isCancelParenthalf: this.isCancelParenthalf,
+      multiple: this.multiple,
+      isParentCheck: this.isParentCheck,
+      parentToADeepChild: this.parentToADeepChild,
+      childToParent: this.childToParent,
+      childToDeepParent: this.childToDeepParent,
+      AllKeys: this.AllKeys,
+      HalfKeys: this.HalfKeys,
+      searchKey: this.searchKey,
+      searchKeyField: this.searchKeyField,
+    };
+  }
 
   private init = (props: TreeProps) => {
     if (Reflect.has(props, 'treeData')) {
@@ -129,6 +148,18 @@ class Tree {
     }
   };
 
+  /** selectedKeys 所有选中的值区分 全选和半选  */
+  branchKey = (selectedKeys: (string | number)[]) => {
+    selectedKeys.forEach((key) => {
+      const childList = this.parentToADeepChild.get(key) || [];
+      const fig = this.mapCheckTrue(childList, selectedKeys);
+      if ((fig || !childList.length) && Array.isArray(this.AllKeys)) {
+        this.AllKeys.push(key);
+      } else if (childList) {
+        this.HalfKeys.push(key);
+      }
+    });
+  };
   /** 获取处理后的数据 */
   getInitMap = () => {
     return {
@@ -173,7 +204,10 @@ class Tree {
   };
 
   // 判断是子项是否全部在全选中
-  private mapCheckTrue = (childList: KeyType[]) => {
+  private mapCheckTrue = (
+    childList: KeyType[],
+    allKeys: KeyType[] | string | number,
+  ) => {
     // 默认全部在里面
     let fig = true;
     // 判断 子项是否全部存在 全选中
@@ -182,8 +216,8 @@ class Tree {
     while (i < lg) {
       // 如果存在禁用数据， 这里要做处理  排除禁用的数据才能算数
       if (
-        Array.isArray(this.AllKeys) &&
-        !this.AllKeys.includes(childList[i]) &&
+        Array.isArray(allKeys) &&
+        !allKeys.includes(childList[i]) &&
         !this.disableId.includes(childList[i])
       ) {
         fig = false; // 不在里面
@@ -202,7 +236,7 @@ class Tree {
     rowKeyArr.forEach((key) => {
       // 父级下的子集
       const childList = this.parentToADeepChild.get(key) || [];
-      const check = this.mapCheckTrue(childList);
+      const check = this.mapCheckTrue(childList, this.AllKeys);
       if (check && Array.isArray(this.AllKeys)) {
         // 子项所有都在全选中 则当前项父级放入全选
         this.AllKeys = Array.from(new Set(this.AllKeys.concat([key])));

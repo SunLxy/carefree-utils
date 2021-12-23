@@ -8,6 +8,10 @@ title: Tree
 
 > 返回处理好的数据
 
+### branchKey
+
+> 区分出半选和全选的数据
+
 ### getRowKey
 
 > 返回主键值
@@ -186,6 +190,16 @@ export default () => {
     console.log('new Tree---->', init);
   }, []);
 
-  return <button onClick={onClick}>点击打印值</button>;
+  const branchKey = () => {
+    init.branchKey(['3-2', '3', '2-0-0', '2-0', '2']);
+    console.log(init);
+  };
+
+  return (
+    <div>
+      <button onClick={onClick}>点击打印值</button>
+      <button onClick={branchKey}>区分出半选和全选的数据</button>
+    </div>
+  );
 };
 ```
