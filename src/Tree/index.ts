@@ -40,6 +40,8 @@ class Tree {
   private rowKey: RowKeyType = 'value';
   // 原始数据
   private treeData: TreeItem[] = [];
+  // 原始数据展开
+  private listDataMap: Map<string | number, any> = new Map([]);
   /** 判断子项字段 */
   private childField: string = 'children';
   /** 禁用项 id */
@@ -58,23 +60,24 @@ class Tree {
   // 3. 子集对应往上的所有父级
   private childToDeepParent: Map<KeyType, KeyType[]> = new Map([]);
   /** 全选数据  */
-  private AllKeys: KeyType[] | KeyType = [];
+  private AllKeys: KeyType[] | KeyType | undefined = [];
   /** 半选数据  半选的时候不会存在单选 只处理多选情况 */
   private HalfKeys: KeyType[] = [];
 
   /** 模糊查询 */
-  private searchKey: string = undefined;
+  private searchKey: string | undefined = undefined;
   /** 模糊查询 字段 */
   private searchKeyField: RowKeyType = this.rowKey;
 
   constructor(props: TreeProps) {
     this.init(props || { treeData: [] });
   }
-  /** 获取内部存储的状态值 */
+
   get store() {
     return {
       rowKey: this.rowKey,
       treeData: this.treeData,
+      listDataMap: this.listDataMap,
       childField: this.childField,
       disableId: this.disableId,
       isCancelParenthalf: this.isCancelParenthalf,
@@ -89,6 +92,26 @@ class Tree {
       searchKeyField: this.searchKeyField,
     };
   }
+  /** 每一项 存储 Map 形式 为后面取值省事 */
+  private saveRow = (item: TreeItem) => {
+    const rowKey = this.getRowKey(item);
+    const { [this.childField]: children, ...rest } = item;
+    this.listDataMap.set(rowKey, { ...rest });
+  };
+  /** 获取对象中 主键 key集合 */
+  getSelectedRowKeys = (selected: TreeItem[]) => {
+    return selected.map((item) => {
+      const rowKey = this.getRowKey(item);
+      return rowKey;
+    });
+  };
+
+  /** 获取每个key对应的对象值 */
+  getSelectedRows = (selected: KeyType[]) => {
+    return selected.map((key) => {
+      return this.listDataMap.get(key);
+    });
+  };
 
   private init = (props: TreeProps) => {
     if (Reflect.has(props, 'treeData')) {
@@ -121,6 +144,7 @@ class Tree {
   private deepTree = (tree: TreeItem[], parent: KeyType[]) => {
     tree.forEach((item) => {
       const { [this.childField]: children } = item;
+      this.saveRow(item);
       // 获取主键值
       const rowKey = this.getRowKey(item);
       if (Array.isArray(children) && children.length) {
@@ -204,10 +228,7 @@ class Tree {
   };
 
   // 判断是子项是否全部在全选中
-  private mapCheckTrue = (
-    childList: KeyType[],
-    allKeys: KeyType[] | string | number,
-  ) => {
+  private mapCheckTrue = (childList: KeyType[], allKeys: Tree['AllKeys']) => {
     // 默认全部在里面
     let fig = true;
     // 判断 子项是否全部存在 全选中

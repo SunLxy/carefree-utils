@@ -24,3 +24,8 @@
 # ide
 /.vscode
 /.idea
+
+# pnp
+/.pnp
+/.pnp*
+

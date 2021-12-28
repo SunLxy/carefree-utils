@@ -6,6 +6,7 @@ title: GroupBy
 
 ```tsx
 import { groupBy } from 'carefree-utils';
+import React from 'react';
 if (window) {
   window.groupBy = groupBy;
 }
@@ -17,4 +18,5 @@ const list = [
 ];
 
 console.log(groupBy(list, 'a'));
+export default () => <div />;
 ```

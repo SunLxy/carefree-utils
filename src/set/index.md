@@ -8,6 +8,7 @@ title: Set
 
 ```tsx
 import { set, get } from 'carefree-utils';
+import React from 'react';
 if (window) {
   window.get = get;
   window.set = set;
@@ -19,6 +20,8 @@ let cuObj = { a: 123 };
 obj = set(obj, ['a', 'b', 'c', 'd'], cuObj, false);
 
 console.log(set(undefined, ['a', 'b'], { c: 3 }, false));
+
+export default () => <div />;
 // obj2= set(obj2,["a","b","c","d"],{a:223},false)
 
 // const current = get(obj,["a","b","c","d"])

@@ -30,7 +30,7 @@ export interface solarTolunarReturn extends Solar2LunarReturn {
 
 ```tsx
 import { MoveDate, paneDate } from 'carefree-utils';
-
+import React from 'react';
 if (window) {
   window.MoveDate = MoveDate;
   window.paneDate = paneDate;
@@ -118,4 +118,5 @@ getslit();
 // }
 // // paneDate.getPaneDate(2021,10) 返回格式
 //
+export default () => <div />;
 ```

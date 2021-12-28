@@ -8,6 +8,7 @@ title: Clone
 
 ```tsx
 import { clone } from 'carefree-utils';
+import React from 'react';
 if (window) {
   window.clone = clone;
 }
@@ -16,4 +17,5 @@ const b = a;
 const c = clone(b);
 console.log(a, b, c);
 console.log(a === b, a === c, b === c);
+export default () => <div />;
 ```
