@@ -415,7 +415,8 @@ class Tree {
 
   /** 递归树 模糊查询数据 */
   private deepSearch = (tree: TreeItem[]) => {
-    return tree.filter((item) => {
+    const resultList = [];
+    tree.map((item) => {
       const { [this.childField]: children, ...rest } = item;
       let list = [];
       let obj = { ...rest };
@@ -427,11 +428,13 @@ class Tree {
           obj[this.childField] = list;
         }
       }
-      if (fig || list.length) {
-        return true;
+      if (list.length) {
+        resultList.push({ ...rest, [this.childField]: list });
+      } else if (fig) {
+        resultList.push({ ...rest });
       }
-      return false;
     });
+    return resultList;
   };
 
   /**
