@@ -31,7 +31,7 @@
     ]
   },
   "devDependencies": {
-    "tsbb": "3.7.6",
+    "tsbb": "3.7.9",
     "dumi": "2.1.7",
     "copyfiles": "2.4.1",
     "gh-pages": "5.0.0",
