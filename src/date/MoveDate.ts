@@ -125,7 +125,7 @@ class MoveDate {
     str: StrType,
     key: KeyType,
     num: number,
-    nextFun?: string,
+    nextFun?: 'getSeconds' | "getMinutes" | "getHours" | "getDate" | "getMonth",
   ) => {
     let start = key === 'date' ? 1 : 0;
     let nextStr: StrType = 'default';
@@ -230,16 +230,6 @@ class MoveDate {
    * */
   private getSeconds = (str: StrType) => {
     this.setDateCom(str, 's', 60);
-  };
-  // 这个方法不进行使用只是解决eslint问题
-  getFun = () => {
-    return {
-      getSeconds: this.getSeconds,
-      getMinutes: this.getMinutes,
-      getHours: this.getHours,
-      getDate: this.getDate,
-      getMonth: this.getMonth,
-    };
   };
 }
 
