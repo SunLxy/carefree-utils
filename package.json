@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "tsbb": "3.7.9",
-    "dumi": "2.1.7",
+    "dumi": "2.4.5",
     "copyfiles": "2.4.1",
     "gh-pages": "5.0.0",
     "lint-staged": "13.1.0",
