@@ -4,6 +4,8 @@ export default defineConfig({
   title: 'carefree-utils',
   mfsu: false,
   outputPath: 'docs-dist',
+  base: process.env.NODE_ENV === 'production' ? '/carefree-utils/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/carefree-utils/' : '/',
   resolve: {
     docDirs: ['docs'],
     atomDirs: [
